@@ -65,22 +65,19 @@ while let stdin = readLine() {
             } else if let number = Int(word) {
                 numberIndex = i
             }
-            
-            
-            
+            i += 1
         }
-        i += 1
+        
     }
     
     
     
     if numberIndex > 0{
-        print("Num Index: \(numberIndex)")
-        var number = Int(inputArray[numberIndex])
-        print("\(number) \t\(numberIndex)")
+        var number = Int(inputArray[numberIndex])!
+        print("\(number) \t is index \(numberIndex)")
     }
     numberIndex = 0
-    
+    inputArray.removeAll()
     
 }
 
