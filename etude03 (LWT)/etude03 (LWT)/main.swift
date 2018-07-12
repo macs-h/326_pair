@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  etude03 (LWT)
+//  etude03 (Look Who's Talking)
 //
 //  Created by Max Huang and Sam Paterson on 11/07/18.
 //  Copyright © 2018 Max Huang. All rights reserved.
@@ -33,13 +33,15 @@ let maoriVerbArray : [String] =   [ "haere",
                                     "ako"]
 
 var inputString : String = ""
-
+var numberIndex : Int = 0
+var inputArray : [String] = []
 // API for checking tense.
 // Reads in lines of input till no further input.
 while let stdin = readLine() {
     inputString = stdin.lowercased()
     noVerb = false
     noPronoun = false
+    var i = 0
     
     let tagger = NSLinguisticTagger(tagSchemes: [.lexicalClass], options: 0)
     tagger.string = inputString
@@ -48,27 +50,36 @@ while let stdin = readLine() {
     tagger.enumerateTags(in: range, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange, _ in
         if let tag = tag {
             let word = (inputString as NSString).substring(with: tokenRange)
+            inputArray.append(word)
+            
             print("\(word): \(tag.rawValue)")
             
+            // verbs
             if tag.rawValue.lowercased() == "verb" {
                 // Gives the corresponding Maori verb
                 if englishVerbArray.contains(word) {
-    //                print(EnglishVerbArray.index(of: word)! / 3)
                     print(maoriVerbArray[englishVerbArray.index(of: word)! / 3])
                 } else {
                     noVerb = true
                 }
-            } else if tag.rawValue.lowercased() == "pronoun" {
-                if englishPronounArray.contains(word) {
-                    print(englishPronounArray.index(of: word)!)
-                } else {
-                    noPronoun = true
-                }
+            } else if let number = Int(word) {
+                numberIndex = i
             }
             
             
+            
         }
+        i += 1
     }
+    
+    
+    
+    if numberIndex > 0{
+        print("Num Index: \(numberIndex)")
+        var number = Int(inputArray[numberIndex])
+        print("\(number) \t\(numberIndex)")
+    }
+    numberIndex = 0
     
     
 }
