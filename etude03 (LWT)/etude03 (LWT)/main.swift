@@ -8,12 +8,12 @@
 
 import Foundation
 
-var noVerb : Bool = false
-var noPronoun : Bool = false
+var noVerb : Bool
+var noPronoun : Bool
 var unknownVerb : String?
-let EnglishPronounArray : [String] = ["i", "me", "you", "he", "she", "him", "her", "we",
+let englishPronounArray : [String] = ["i", "me", "you", "he", "she", "him", "her", "we",
                                       "us", "they", "them"]
-let EnglishVerbArray : [String] = [ "go", "going", "gone",
+let englishVerbArray : [String] = [ "go", "going", "gone",
                                     "make", "making", "made",
                                     "see", "seeing", "seen",
                                     "want", "wanting", "wanted",
@@ -21,7 +21,9 @@ let EnglishVerbArray : [String] = [ "go", "going", "gone",
                                     "ask", "asking", "asked",
                                     "read", "reading", "read",
                                     "learn", "learning", "learned"]
-let MaoriVerbArray : [String] =   [ "haere",
+
+let maoriTenseArray : [String] = ["I", "Kei te", "Ka"]
+let maoriVerbArray : [String] =   [ "haere",
                                     "hanga",
                                     "kite",
                                     "hiahia",
@@ -36,6 +38,8 @@ var inputString : String = ""
 // Reads in lines of input till no further input.
 while let stdin = readLine() {
     inputString = stdin.lowercased()
+    noVerb = false
+    noPronoun = false
     
     let tagger = NSLinguisticTagger(tagSchemes: [.lexicalClass], options: 0)
     tagger.string = inputString
@@ -48,15 +52,15 @@ while let stdin = readLine() {
             
             if tag.rawValue.lowercased() == "verb" {
                 // Gives the corresponding Maori verb
-                if EnglishVerbArray.contains(word) {
+                if englishVerbArray.contains(word) {
     //                print(EnglishVerbArray.index(of: word)! / 3)
-                    print(MaoriVerbArray[EnglishVerbArray.index(of: word)! / 3])
+                    print(maoriVerbArray[englishVerbArray.index(of: word)! / 3])
                 } else {
                     noVerb = true
                 }
             } else if tag.rawValue.lowercased() == "pronoun" {
-                if EnglishPronounArray.contains(word) {
-                    print(EnglishPronounArray.index(of: word)!)
+                if englishPronounArray.contains(word) {
+                    print(englishPronounArray.index(of: word)!)
                 } else {
                     noPronoun = true
                 }
