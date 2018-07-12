@@ -52,7 +52,7 @@ while let stdin = readLine() {
     //                print(EnglishVerbArray.index(of: word)! / 3)
                     print(MaoriVerbArray[EnglishVerbArray.index(of: word)! / 3])
                 } else {
-                    noVerb = true
+                    noVerb = true
                 }
             } else if tag.rawValue.lowercased() == "pronoun" {
                 if EnglishPronounArray.contains(word) {
