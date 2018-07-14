@@ -35,6 +35,45 @@ let maoriVerbArray : [String] =   [ "haere",
 var inputString : String = ""
 var numberIndex : Int = 0
 var inputArray : [String] = []
+
+
+
+func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, col: Int) {
+    let words = words.joined(separator: " ")
+    var col = 0, row = 0
+    if number > 1{
+        if includer == "incl"{
+            //includes the listener (col 0 or 2)
+            if words == "you two"{
+                col = 2
+                //row = 1
+            }else if words == "you" && number != 2{
+                col = 2
+            }else{
+                col = 0
+            }
+        }else if includer == "excl"{
+            //excludes the listener (col 1 or 3)
+            if words == "they" || words == "them"{
+                col = 3
+            }else{
+                col = 1
+            }
+        }
+    }else{
+        if words == "i" || words == "me"{
+            col = 1
+        }else if words == "you"{
+            col = 2
+        }else{
+            col = 3
+        }
+    }
+    row = number-1
+    return (row: row, col: col)
+}
+
+    
 // API for checking tense.
 // Reads in lines of input till no further input.
 while let stdin = readLine() {
@@ -71,15 +110,23 @@ while let stdin = readLine() {
     }
     
     
-    
+    var matrix: (Int, Int)
     if numberIndex > 0{
         var number = Int(inputArray[numberIndex])!
         print("\(number) \t is index \(numberIndex)")
+        matrix = getMatrixPos(number: number, includer: inputArray[numberIndex+1], words: Array(inputArray.prefix(numberIndex)))
+    }else{
+        //no number
+        matrix = getMatrixPos(number: 1, includer: "nil", words: Array(inputArray.prefix(1)))
     }
+    print("matrix pos = \(matrix)")
     numberIndex = 0
     inputArray.removeAll()
     
 }
+
+
+
 
 
 // for loop: loop through each word in the sentence.
