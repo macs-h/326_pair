@@ -32,6 +32,9 @@ let maoriVerbArray : [String] =   [ "haere",
                                     "pānui",
                                     "ako"]
 
+let maoriPronoun : [[String]] = [["none", "au", "koe", "ia"],
+                                 ["tāua", "māua", "kōrua", "rāua"],
+                                 ["tātou","mātou", "koutou", "rātou"],]
 var inputString : String = ""
 var numberIndex : Int = 0
 var inputArray : [String] = []
@@ -119,6 +122,7 @@ while let stdin = readLine() {
         //no number
         matrix = getMatrixPos(number: 1, includer: "nil", words: Array(inputArray.prefix(1)))
     }
+    maoriPronoun[matrix.0][matrix.1]
     print("matrix pos = \(matrix)")
     numberIndex = 0
     inputArray.removeAll()
