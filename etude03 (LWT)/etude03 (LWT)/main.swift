@@ -8,12 +8,17 @@
 
 import Foundation
 
-var noVerb : Bool
-var noPronoun : Bool
-var unknownVerb : String?
-let englishPronounArray : [String] = ["i", "me", "you", "he", "she", "him", "her", "we",
+class tense {
+    var baseWordArray
+    
+}
+
+var noVerb: Bool
+var noPronoun: Bool
+var unknownVerb: String?
+let englishPronounArray: [String] = ["i", "me", "you", "he", "she", "him", "her", "we",
                                       "us", "they", "them"]
-let englishVerbArray : [String] = [ "go", "going", "gone",
+let englishVerbArray: [String] = [ "go", "going", "gone",
                                     "make", "making", "made",
                                     "see", "seeing", "seen",
                                     "want", "wanting", "wanted",
@@ -22,8 +27,8 @@ let englishVerbArray : [String] = [ "go", "going", "gone",
                                     "read", "reading", "read",
                                     "learn", "learning", "learned"]
 
-let maoriTenseArray : [String] = ["I", "Kei te", "Ka"]
-let maoriVerbArray : [String] =   [ "haere",
+let maoriTenseArray: [String] = ["I", "Kei te", "Ka"]
+let maoriVerbArray: [String] =   [ "haere",
                                     "hanga",
                                     "kite",
                                     "hiahia",
@@ -32,12 +37,21 @@ let maoriVerbArray : [String] =   [ "haere",
                                     "pānui",
                                     "ako"]
 
-let maoriPronoun : [[String]] = [["none", "au", "koe", "ia"],
+let maoriPronoun: [[String]] = [["none", "au", "koe", "ia"],
                                  ["tāua", "māua", "kōrua", "rāua"],
                                  ["tātou","mātou", "koutou", "rātou"],]
-var inputString : String = ""
-var numberIndex : Int = 0
-var inputArray : [String] = []
+var inputString: String = ""
+var numberIndex: Int = 0
+var inputArray: [String] = []
+
+var tenseDictionary: Dictionary = [ "went": "I",
+                                    "going": "Kei te",
+                                    "will": "Ka"]
+// hash the lemma. At each entry, make dictionary for key/value pair.
+// 0 for past, 1 for present, 2 for future tense.
+// use integer values to correspond to past/present/future maori sentence starters.
+
+// make a class to hold an array of base words and a function to determine which tense it is.
 
 
 
@@ -80,6 +94,7 @@ func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, 
 // API for checking tense.
 // Reads in lines of input till no further input.
 while let stdin = readLine() {
+    
     inputString = stdin.lowercased()
     noVerb = false
     noPronoun = false
@@ -132,21 +147,3 @@ while let stdin = readLine() {
 
 
 
-
-// for loop: loop through each word in the sentence.
-    // CONVERT TO LOWER CASE!
-
-    // switch: checking for verbs.
-        // default case = flag and store in variable.
-
-    // if: check if word is pronoun in predefined array.
-    // else: flag.
-
-
-    //if (noVerb && noPronoun) {
-    //    print("Invalid sentence")
-    //} else if (noVerb) {
-    //    print("Unknown verb \"\(String(describing: unknownVerb))\"")
-    //}
-
-// use "readline()" to parse input from CLI
