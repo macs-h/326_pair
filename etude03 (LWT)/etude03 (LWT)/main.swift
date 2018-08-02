@@ -90,6 +90,27 @@ func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, 
     return (row: row, col: col)
 }
 
+//
+func lemmatize(_ sentence: String) -> String {
+    var returnString:String = ""
+    let tagger = NSLinguisticTagger(tagSchemes: [.lemma], options: 0)
+    tagger.string = sentence
+    let range = NSMakeRange(0, sentence.utf16.count)
+    let options: NSLinguisticTagger.Options = [.omitWhitespace, .omitPunctuation]
+    
+    tagger.enumerateTags(in: range, unit: .word, scheme: .lemma, options: options) { (tag, tokenRange, stop) in
+        let word = (sentence as NSString).substring(with: tokenRange)
+        if let lemma = tag?.rawValue {
+            //print("\(word) -> \(lemma)")
+            returnString = lemma
+        } else {
+            //print("\(word) -> ???")
+        }
+    }
+    return returnString
+}
+//
+
     
 // API for checking tense.
 // Reads in lines of input till no further input.
@@ -113,6 +134,7 @@ while let stdin = readLine() {
             
             // verbs
             if tag.rawValue.lowercased() == "verb" {
+                print(">> lemma: \(lemmatize(word))")
                 // Gives the corresponding Maori verb
                 if englishVerbArray.contains(word) {
                     print(maoriVerbArray[englishVerbArray.index(of: word)! / 3])
