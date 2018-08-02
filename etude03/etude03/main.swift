@@ -8,9 +8,67 @@
 
 import Foundation
 
-class tense {
-    var baseWordArray
+enum WordTense: String {
+    case past
+    case present
+    case future
+    case notFound
+}
+
+/**
+    Holds the past, present, and future tense words for a given lemma.
+ */
+class Tense {
     
+    // STORED PROPERTIES
+    let past: String
+    let present: String
+    let future: String
+    let maoriVerb: String
+    
+    
+    /**
+        Designated initialiser.
+ 
+        - parameters:
+            - past:     Past tense words of the lemma.
+            - present:  Pressent tense words of the lemma.
+            - future:   Future tense words of the lemma.
+    */
+    init(_ past: String, _ present: String, _ future: String, _ maoriVerb: String) {
+        self.past = past
+        self.present = present
+        self.future = future
+        self.maoriVerb = maoriVerb
+    }
+    
+    /**
+        Determines the tense of the verb.
+     
+        - parameter word: The verb to be determined.
+     
+        - returns: an enum which indicates the tense of the verb, or not found.
+    */
+    func getTense(_ word: String) -> WordTense {
+        if (self.past.contains(word)) {
+            return WordTense.past
+        } else if (self.present.contains(word)) {
+            return WordTense.present
+        } else if (self.future.contains(word)) {
+            return WordTense.future
+        } else {
+            return WordTense.notFound
+        }
+    }
+    
+    /**
+        Returns the corresponding Maori verb.
+ 
+        - returns: String - a Maori verb.
+    */
+    func getMaoriVerb() -> String {
+        return self.maoriVerb
+    }
 }
 
 var noVerb: Bool
@@ -47,11 +105,18 @@ var inputArray: [String] = []
 var tenseDictionary: Dictionary = [ "went": "I",
                                     "going": "Kei te",
                                     "will": "Ka"]
-// hash the lemma. At each entry, make dictionary for key/value pair.
-// 0 for past, 1 for present, 2 for future tense.
-// use integer values to correspond to past/present/future maori sentence starters.
 
-// make a class to hold an array of base words and a function to determine which tense it is.
+let maoriStartArray: [String] = ["I", "Kei te", "Ka"]
+
+let verbTenseDict: Dictionary = [ "go":     Tense("went", "going", "go", "haere"),
+                                  "make":   Tense("made", "making", "make", "hanga"),
+                                  "see":    Tense("saw", "see", "seen", "kite"),
+                                  "want":   Tense("wanted", "wanting", "want", "hiahia"),
+                                  "call":   Tense("called", "calling", "call", "karanga"),
+                                  "ask":    Tense("asked", "asking", "ask", "pātai"),
+                                  "read":   Tense("read", "reading", "read", "pānui"),
+                                  "learn":  Tense("learned", "learning", "learn", "ako") ]
+
 
 
 
@@ -91,28 +156,24 @@ func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, 
 }
 
 //
-func lemmatize(_ sentence: String) -> String {
+func lemmatize(_ word: String) -> String {
     var returnString:String = ""
     let tagger = NSLinguisticTagger(tagSchemes: [.lemma], options: 0)
-    tagger.string = sentence
-    let range = NSMakeRange(0, sentence.utf16.count)
+    tagger.string = word
+    let range = NSMakeRange(0, word.utf16.count)
     let options: NSLinguisticTagger.Options = [.omitWhitespace, .omitPunctuation]
     
     tagger.enumerateTags(in: range, unit: .word, scheme: .lemma, options: options) { (tag, tokenRange, stop) in
-        let word = (sentence as NSString).substring(with: tokenRange)
+//        let word = (sentence as NSString).substring(with: tokenRange)
         if let lemma = tag?.rawValue {
-            //print("\(word) -> \(lemma)")
             returnString = lemma
-        } else {
-            //print("\(word) -> ???")
         }
     }
     return returnString
 }
 //
 
-    
-// API for checking tense.
+
 // Reads in lines of input till no further input.
 while let stdin = readLine() {
     
@@ -120,6 +181,8 @@ while let stdin = readLine() {
     noVerb = false
     noPronoun = false
     var i = 0
+    var sentenceStarter: String = ""
+    var outputArray: [String] = []
     
     let tagger = NSLinguisticTagger(tagSchemes: [.lexicalClass], options: 0)
     tagger.string = inputString
@@ -130,17 +193,34 @@ while let stdin = readLine() {
             let word = (inputString as NSString).substring(with: tokenRange)
             inputArray.append(word)
             
-            print("\(word): \(tag.rawValue)")
+//            print("\(word): \(tag.rawValue)")
             
             // verbs
             if tag.rawValue.lowercased() == "verb" {
-                print(">> lemma: \(lemmatize(word))")
+//                print(">> lemma: \(lemmatize(word))")
+                if let t = verbTenseDict[lemmatize(word)] {
+//                    sentenceStarter = maoriStartArray[t.getTense(word).hashValue]
+                    outputArray.insert(maoriStartArray[t.getTense(word).hashValue], at: 0)
+                    outputArray.insert(t.getMaoriVerb(), at: outputArray.endIndex)
+                }
+//                print(sentenceStarter)
+//                print(outputArray)
+                
+                //
                 // Gives the corresponding Maori verb
+                
+//                if verbTenseDict[lemmatize(word)] != nil {
+//                    outputArray.insert(<#T##newElement: String##String#>, at: <#T##Int#>)
+//                }
+                
                 if englishVerbArray.contains(word) {
-                    print(maoriVerbArray[englishVerbArray.index(of: word)! / 3])
+//                    print(maoriVerbArray[englishVerbArray.index(of: word)! / 3])
+//                    outputArray.insert(maoriVerbArray, at: <#T##Int#>)
                 } else {
                     noVerb = true
                 }
+                //
+                
             } else if let number = Int(word) {
                 numberIndex = i
             }
@@ -153,17 +233,22 @@ while let stdin = readLine() {
     var matrix: (Int, Int)
     if numberIndex > 0{
         var number = Int(inputArray[numberIndex])!
-        print("\(number) \t is index \(numberIndex)")
+//        print("\(number) \t is index \(numberIndex)")
         matrix = getMatrixPos(number: number, includer: inputArray[numberIndex+1], words: Array(inputArray.prefix(numberIndex)))
     }else{
         //no number
         matrix = getMatrixPos(number: 1, includer: "nil", words: Array(inputArray.prefix(1)))
     }
     maoriPronoun[matrix.0][matrix.1]
-    print("matrix pos = \(matrix)")
+//    print("matrix pos = \(matrix)")
+    outputArray.insert(maoriPronoun[matrix.0][matrix.1], at: outputArray.endIndex)
+    
+    print(outputArray.joined(separator: " "))
+    
     numberIndex = 0
     inputArray.removeAll()
-    
+    outputArray.removeAll()
+
 }
 
 

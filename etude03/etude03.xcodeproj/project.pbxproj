@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		607DDACF20F5F9D400B73AC0 /* etude03 (LWT) */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "etude03 (LWT)"; sourceTree = BUILT_PRODUCTS_DIR; };
+		607DDACF20F5F9D400B73AC0 /* etude03 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = etude03; sourceTree = BUILT_PRODUCTS_DIR; };
 		607DDAD220F5F9D400B73AC0 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -41,7 +41,7 @@
 		607DDAC620F5F9D400B73AC0 = {
 			isa = PBXGroup;
 			children = (
-				607DDAD120F5F9D400B73AC0 /* etude03 (LWT) */,
+				607DDAD120F5F9D400B73AC0 /* etude03 */,
 				607DDAD020F5F9D400B73AC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,25 +49,25 @@
 		607DDAD020F5F9D400B73AC0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				607DDACF20F5F9D400B73AC0 /* etude03 (LWT) */,
+				607DDACF20F5F9D400B73AC0 /* etude03 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		607DDAD120F5F9D400B73AC0 /* etude03 (LWT) */ = {
+		607DDAD120F5F9D400B73AC0 /* etude03 */ = {
 			isa = PBXGroup;
 			children = (
 				607DDAD220F5F9D400B73AC0 /* main.swift */,
 			);
-			path = "etude03 (LWT)";
+			path = etude03;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		607DDACE20F5F9D400B73AC0 /* etude03 (LWT) */ = {
+		607DDACE20F5F9D400B73AC0 /* etude03 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 607DDAD620F5F9D400B73AC0 /* Build configuration list for PBXNativeTarget "etude03 (LWT)" */;
+			buildConfigurationList = 607DDAD620F5F9D400B73AC0 /* Build configuration list for PBXNativeTarget "etude03" */;
 			buildPhases = (
 				607DDACB20F5F9D400B73AC0 /* Sources */,
 				607DDACC20F5F9D400B73AC0 /* Frameworks */,
@@ -77,9 +77,9 @@
 			);
 			dependencies = (
 			);
-			name = "etude03 (LWT)";
+			name = etude03;
 			productName = "etude03 (LWT)";
-			productReference = 607DDACF20F5F9D400B73AC0 /* etude03 (LWT) */;
+			productReference = 607DDACF20F5F9D400B73AC0 /* etude03 */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -97,7 +97,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 607DDACA20F5F9D400B73AC0 /* Build configuration list for PBXProject "etude03 (LWT)" */;
+			buildConfigurationList = 607DDACA20F5F9D400B73AC0 /* Build configuration list for PBXProject "etude03" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -109,7 +109,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				607DDACE20F5F9D400B73AC0 /* etude03 (LWT) */,
+				607DDACE20F5F9D400B73AC0 /* etude03 */,
 			);
 		};
 /* End PBXProject section */
@@ -266,7 +266,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		607DDACA20F5F9D400B73AC0 /* Build configuration list for PBXProject "etude03 (LWT)" */ = {
+		607DDACA20F5F9D400B73AC0 /* Build configuration list for PBXProject "etude03" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607DDAD420F5F9D400B73AC0 /* Debug */,
@@ -275,7 +275,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		607DDAD620F5F9D400B73AC0 /* Build configuration list for PBXNativeTarget "etude03 (LWT)" */ = {
+		607DDAD620F5F9D400B73AC0 /* Build configuration list for PBXNativeTarget "etude03" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607DDAD720F5F9D400B73AC0 /* Debug */,
