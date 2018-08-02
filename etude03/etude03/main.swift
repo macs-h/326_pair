@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  etude03 (Look Who's Talking)
+//  etude03
 //
 //  Created by Max Huang and Sam Paterson on 11/07/18.
 //  Copyright © 2018 Max Huang. All rights reserved.
@@ -50,11 +50,11 @@ class Tense {
         - returns: an enum which indicates the tense of the verb, or not found.
     */
     func getTense(_ word: String) -> WordTense {
-        if (self.past.contains(word)) {
+        if (self.past == word) {
             return WordTense.past
-        } else if (self.present.contains(word)) {
+        } else if (self.present == word) {
             return WordTense.present
-        } else if (self.future.contains(word)) {
+        } else if (self.future == word) {
             return WordTense.future
         } else {
             return WordTense.notFound
@@ -117,7 +117,7 @@ let verbTenseDict: Dictionary = [ "go":     Tense("went", "going", "go", "haere"
                                   "read":   Tense("read", "reading", "read", "pānui"),
                                   "learn":  Tense("learned", "learning", "learn", "ako") ]
 
-
+var verbNotFound: String = ""
 
 
 func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, col: Int) {
@@ -167,6 +167,8 @@ func lemmatize(_ word: String) -> String {
 //        let word = (sentence as NSString).substring(with: tokenRange)
         if let lemma = tag?.rawValue {
             returnString = lemma
+        } else {
+            returnString = word
         }
     }
     return returnString
@@ -178,8 +180,8 @@ func lemmatize(_ word: String) -> String {
 while let stdin = readLine() {
     
     inputString = stdin.lowercased()
-    noVerb = false
-    noPronoun = false
+    noVerb = true
+    noPronoun = true
     var i = 0
     var sentenceStarter: String = ""
     var outputArray: [String] = []
@@ -199,31 +201,24 @@ while let stdin = readLine() {
             if tag.rawValue.lowercased() == "verb" {
 //                print(">> lemma: \(lemmatize(word))")
                 if let t = verbTenseDict[lemmatize(word)] {
-//                    sentenceStarter = maoriStartArray[t.getTense(word).hashValue]
+                    noVerb = false
                     outputArray.insert(maoriStartArray[t.getTense(word).hashValue], at: 0)
+//                    print("> word:", word)
+//                    print("> Hash:", t.getTense(word).rawValue)
                     outputArray.insert(t.getMaoriVerb(), at: outputArray.endIndex)
-                }
-//                print(sentenceStarter)
-//                print(outputArray)
-                
-                //
-                // Gives the corresponding Maori verb
-                
-//                if verbTenseDict[lemmatize(word)] != nil {
-//                    outputArray.insert(<#T##newElement: String##String#>, at: <#T##Int#>)
-//                }
-                
-                if englishVerbArray.contains(word) {
-//                    print(maoriVerbArray[englishVerbArray.index(of: word)! / 3])
-//                    outputArray.insert(maoriVerbArray, at: <#T##Int#>)
                 } else {
                     noVerb = true
+                    verbNotFound = word
                 }
-                //
                 
             } else if let number = Int(word) {
                 numberIndex = i
             }
+            
+            if tag.rawValue.lowercased() == "pronoun" {
+                noPronoun = false
+            }
+            
             i += 1
         }
         
@@ -243,7 +238,15 @@ while let stdin = readLine() {
 //    print("matrix pos = \(matrix)")
     outputArray.insert(maoriPronoun[matrix.0][matrix.1], at: outputArray.endIndex)
     
-    print(outputArray.joined(separator: " "))
+//    print(">", outputArray)
+    
+    if (noPronoun == true) {
+        print("invalid sentence")
+    } else if (noVerb == true) {
+        print("unknown verb \"\(verbNotFound)\"")
+    } else {
+        print(outputArray.joined(separator: " "))
+    }
     
     numberIndex = 0
     inputArray.removeAll()

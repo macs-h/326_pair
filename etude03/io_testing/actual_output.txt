@@ -3,6 +3,6 @@ Kei te haere au
 Kei te pānui rāua
 Kei te pānui tāua
 I haere au
-au
-ia
-ia
+Ka haere au
+invalid sentence
+unknown verb "coming"
