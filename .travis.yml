@@ -1,4 +1,5 @@
 language: objective-c
 os: osx
 script:
-  - ./etude03/test_script.sh
+  - cd etude03/
+  - ./test_script.sh
