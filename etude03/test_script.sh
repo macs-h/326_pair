@@ -1,11 +1,30 @@
 #!/bin/bash
 
-printf "Compiling main.swift...\n\n"
-swiftc etude03/main.swift > /dev/null 2>&1
+printf "Compiling main.swift...\n"
+swiftc etude03/main.swift > .compiletime_output.txt
 
-cat io_testing/input.txt | swift etude03/main.swift 1> io_testing/actual_output.txt 2> stderr_output.txt
+if [ -s .compiletime_output.txt ]
+then
+    printf "Compile-time warnings and/or errors:\n"
+    cat .compiletime_output.txt
+else
+    printf "No compile-time warnings or errors.\n"
+fi
+
+cat io_testing/input.txt | swift etude03/main.swift 1> \
+io_testing/actual_output.txt 2> .runtime_output.txt
+
+if [ -s .runtime_output.txt ]
+then
+    printf "Run-time warnings and/or errors:\n"
+    cat .runtime_output.txt
+
+else
+    printf "No run-time warnings or errors.\n"
+    echo "-----------------------------------"
+    echo ""
+fi
 
 printf "Running diff on ACTUAL vs EXPECTED output...\n"
 
 diff io_testing/actual_output.txt io_testing/expected_output.txt
-
