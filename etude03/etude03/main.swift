@@ -133,7 +133,13 @@ func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, 
     return (row: row, col: col)
 }
 
-//
+/**
+    Determines the lemma of the word.
+ 
+    - parameter word: word to be lemmatized.
+ 
+    - returns: the lemma of the word.
+ */
 func lemmatize(_ word: String) -> String {
     var returnString:String = ""
     let tagger = NSLinguisticTagger(tagSchemes: [.lemma], options: 0)
