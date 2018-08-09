@@ -129,7 +129,11 @@ func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, 
             col = 3
         }
     }
-    row = number-1
+    var tempNum = number
+    if number > 3{ //accounts for more than 3 people
+        tempNum = 3
+    }
+    row = tempNum-1
     return (row: row, col: col)
 }
 
@@ -207,6 +211,10 @@ while let stdin = readLine() {
     var matrix: (Int, Int)
     if numberIndex > 0 {
         let number = Int(inputArray[numberIndex])!
+        if number < 1{
+            noPronoun = true
+            break
+        }
         matrix = getMatrixPos(number: number, includer: inputArray[numberIndex+1], words: Array(inputArray.prefix(numberIndex)))
     } else {
         // no number

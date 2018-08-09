@@ -6,3 +6,5 @@ I haere au
 Ka haere au
 invalid sentence
 unknown verb "coming"
+Kei te pānui kōrua
+invalid sentence
