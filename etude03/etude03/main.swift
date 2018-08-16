@@ -102,18 +102,23 @@ let verbTenseDict: Dictionary = [ "go":     Tense("went", "going", "go", "haere"
                                   "read":   Tense("read", "reading", "read", "pānui"),
                                   "learn":  Tense("learned", "learning", "learn", "ako") ]
 
-
+/**
+    Gets the Maori pronoun for the corresponding English pronoun.
+ 
+    - parameters:
+        - number:   The number of people specified if more 1
+        - includer: Assigned either "incl" or "excl" depedning on if the
+                    listener is included or not
+        - words:    The words before the '(' to help indicate pronoun
+ 
+    - returns:  The tuple made out of `row` and `col` position so pronoun can
+                be selected
+ */
 func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, col: Int) {
     let words = words.joined(separator: " ")
     var col = 0, row = 0
     if number > 1 {
         if includer == "incl" {
-            // includes the listener (col 0 or 2)
-            /*if words == "you two" {
-                col = 2
-                //row = 1
-            } else if words == "you" && number != 2 {
-                col = 2*/
             if words == "you"{
                 col = 2
             } else {
@@ -243,7 +248,3 @@ while let stdin = readLine() {
     outputArray.removeAll()
 
 }
-
-
-
-
