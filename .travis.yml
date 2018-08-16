@@ -1,4 +1,0 @@
-language: objective-c
-script:
-  - cd etude03/
-  - ./test_script.sh
