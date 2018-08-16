@@ -109,10 +109,12 @@ func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, 
     if number > 1 {
         if includer == "incl" {
             // includes the listener (col 0 or 2)
-            if words == "you two" {
+            /*if words == "you two" {
                 col = 2
                 //row = 1
             } else if words == "you" && number != 2 {
+                col = 2*/
+            if words == "you"{
                 col = 2
             } else {
                 col = 0
