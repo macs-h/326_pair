@@ -7,7 +7,10 @@
 //
 
 import Foundation
-    
+
+/**
+    Enums describing the tense of the word, or `notFound`.
+ */
 enum WordTense: String {
     case past
     case present
@@ -31,9 +34,10 @@ class Tense {
         Designated initialiser.
  
         - parameters:
-            - past:     Past tense words of the lemma.
-            - present:  Pressent tense words of the lemma.
-            - future:   Future tense words of the lemma.
+            - past:         Past tense words of the lemma.
+            - present:      Pressent tense words of the lemma.
+            - future:       Future tense words of the lemma.
+            - maoriVerb:    The corresponding Maori verb.
     */
     init(_ past: String, _ present: String, _ future: String, _ maoriVerb: String) {
         self.past = past
@@ -41,6 +45,7 @@ class Tense {
         self.future = future
         self.maoriVerb = maoriVerb
     }
+    
     
     /**
         Determines the tense of the verb.
