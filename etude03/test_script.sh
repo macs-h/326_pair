@@ -28,4 +28,5 @@ fi
 printf "Running diff on ACTUAL vs EXPECTED output...\n"
 printf "Currently ignoring 'Kei te panui taua/korua'\n"
 
-diff -I "Kei te pānui " io_testing/actual_output.txt io_testing/expected_output.txt
+#diff -I "Kei te pānui " io_testing/actual_output.txt io_testing/expected_output.txt
+diff io_testing/actual_output.txt io_testing/expected_output.txt
