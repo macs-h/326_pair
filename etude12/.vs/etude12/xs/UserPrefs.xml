@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{5183C2BC-0F18-4E9C-BB99-4F6A0EC8F9EB}|Default">
+  <MonoDevelop.Ide.ItemProperties.AntsOnAPlane PreferredExecutionTarget="MonoDevelop.Default" FirstBuild="True" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AntsOnAPlane/Ant.cs">
+    <Files>
+      <File FileName="AntsOnAPlane/Program.cs" Line="9" Column="47" />
+      <File FileName="AntsOnAPlane/Ant.cs" Line="10" Column="13" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

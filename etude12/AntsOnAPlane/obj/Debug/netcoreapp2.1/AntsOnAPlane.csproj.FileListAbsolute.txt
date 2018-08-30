@@ -1,0 +1,11 @@
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/bin/Debug/netcoreapp2.1/AntsOnAPlane.deps.json
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/bin/Debug/netcoreapp2.1/AntsOnAPlane.runtimeconfig.json
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/bin/Debug/netcoreapp2.1/AntsOnAPlane.runtimeconfig.dev.json
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/bin/Debug/netcoreapp2.1/AntsOnAPlane.dll
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/bin/Debug/netcoreapp2.1/AntsOnAPlane.pdb
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/obj/Debug/netcoreapp2.1/AntsOnAPlane.csprojAssemblyReference.cache
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/obj/Debug/netcoreapp2.1/AntsOnAPlane.csproj.CoreCompileInputs.cache
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/obj/Debug/netcoreapp2.1/AntsOnAPlane.AssemblyInfoInputs.cache
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/obj/Debug/netcoreapp2.1/AntsOnAPlane.AssemblyInfo.cs
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/obj/Debug/netcoreapp2.1/AntsOnAPlane.dll
+/Users/sampaterson/Documents/Uni/Cosc326/pairs/etude12/AntsOnAPlane/obj/Debug/netcoreapp2.1/AntsOnAPlane.pdb
