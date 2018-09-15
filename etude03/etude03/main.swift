@@ -2,12 +2,16 @@
 //  main.swift
 //  etude03
 //
+//  Version: 2.0
 //  Created by Max Huang and Sam Paterson on 11/07/18.
 //  Copyright © 2018 Max Huang. All rights reserved.
 //
 
 import Foundation
-    
+
+/**
+    Enums describing the tense of the word, or `notFound`.
+ */
 enum WordTense: String {
     case past
     case present
@@ -22,7 +26,7 @@ class Tense {
     
     // STORED PROPERTIES
     let past: String
-    let present: String
+    let present: [String]
     let future: String
     let maoriVerb: String
     
@@ -31,16 +35,18 @@ class Tense {
         Designated initialiser.
  
         - parameters:
-            - past:     Past tense words of the lemma.
-            - present:  Pressent tense words of the lemma.
-            - future:   Future tense words of the lemma.
+            - past:         Past tense words of the lemma.
+            - present:      Pressent tense words of the lemma.
+            - future:       Future tense words of the lemma.
+            - maoriVerb:    The corresponding Maori verb.
     */
-    init(_ past: String, _ present: String, _ future: String, _ maoriVerb: String) {
+    init(_ past: String, _ present: [String], _ future: String, _ maoriVerb: String) {
         self.past = past
         self.present = present
         self.future = future
         self.maoriVerb = maoriVerb
     }
+    
     
     /**
         Determines the tense of the verb.
@@ -52,12 +58,12 @@ class Tense {
     func getTense(_ word: String) -> WordTense {
         if (self.past == word) {
             return WordTense.past
-        } else if (self.present == word) {
+        } else if (self.present.contains(word)) {
             return WordTense.present
         } else if (self.future == word) {
             return WordTense.future
         } else {
-            return WordTense.notFound
+            return WordTense.present
         }
     }
     
@@ -78,37 +84,46 @@ var inputString: String
 var numberIndex: Int = 0
 var inputArray: [String] = []
 
+var t_future: Bool = false
+var t_past: Bool = false
+var tense: WordTense?
+
 let maoriPronoun: [[String]] = [ ["none", "au", "koe", "ia"],
                                  ["tāua", "māua", "kōrua", "rāua"],
                                  ["tātou","mātou", "koutou", "rātou"] ]
 
-var tenseDictionary: Dictionary = [ "went": "I",
-                                    "going": "Kei te",
-                                    "will": "Ka"]
+//var tenseDictionary: Dictionary = [ "went": "I",
+//                                    "going": "Kei te",
+//                                    "will": "Ka"]
 
 let maoriStartArray: [String] = ["I", "Kei te", "Ka"]
 
-let verbTenseDict: Dictionary = [ "go":     Tense("went", "going", "go", "haere"),
-                                  "make":   Tense("made", "making", "make", "hanga"),
-                                  "see":    Tense("saw", "see", "seen", "kite"),
-                                  "want":   Tense("wanted", "wanting", "want", "hiahia"),
-                                  "call":   Tense("called", "calling", "call", "karanga"),
-                                  "ask":    Tense("asked", "asking", "ask", "pātai"),
-                                  "read":   Tense("read", "reading", "read", "pānui"),
-                                  "learn":  Tense("learned", "learning", "learn", "ako") ]
+let verbTenseDict: Dictionary = [ "go":     Tense("went", ["going"], "go", "haere"),
+                                  "make":   Tense("made", ["making"], "make", "hanga"),
+                                  "see":    Tense("saw", ["see", "seeing"], "seen", "kite"),
+                                  "want":   Tense("wanted", ["wanting"], "want", "hiahia"),
+                                  "call":   Tense("called", ["calling"], "call", "karanga"),
+                                  "ask":    Tense("asked", ["asking"], "ask", "pātai"),
+                                  "read":   Tense("read", ["reading"], "read", "pānui"),
+                                  "learn":  Tense("learned", ["learning"], "learn", "ako") ]
 
-
+/**
+    Gets the Maori pronoun for the corresponding English pronoun.
+ 
+    - parameters:
+        - number:   The number of people specified if more 1
+        - includer: Assigned either "incl" or "excl" depedning on if the
+                    listener is included or not
+        - words:    The words before the '(' to help indicate pronoun
+ 
+    - returns:  The tuple made out of `row` and `col` position so pronoun can
+                be selected
+ */
 func getMatrixPos(number: Int, includer: String, words: [String]) -> (row: Int, col: Int) {
     let words = words.joined(separator: " ")
     var col = 0, row = 0
     if number > 1 {
         if includer == "incl" {
-            // includes the listener (col 0 or 2)
-            /*if words == "you two" {
-                col = 2
-                //row = 1
-            } else if words == "you" && number != 2 {
-                col = 2*/
             if words == "you"{
                 col = 2
             } else {
@@ -184,12 +199,24 @@ while let stdin = readLine() {
             let word = (inputString as NSString).substring(with: tokenRange)
             inputArray.append(word)
             
+            if word == "will" {
+                t_past = false
+                t_future = true
+            } else if word == "went" {
+                t_future = false
+                t_past = true
+            }
+            
             // If word is a verb...
             if tag.rawValue.lowercased() == "verb" {
                 if let t = verbTenseDict[lemmatize(word)] {
                     noVerb = false
-                    outputArray.insert(maoriStartArray[t.getTense(word).hashValue], at: 0)
+                    
+                    if !t_future || !t_past {
+                        tense = t.getTense(word)
+                    }
                     outputArray.insert(t.getMaoriVerb(), at: outputArray.endIndex)
+                    
                 } else {
                     noVerb = true
                     unknownVerb = word
@@ -230,15 +257,20 @@ while let stdin = readLine() {
     } else if noVerb == true {
         print("unknown verb \"\(unknownVerb!)\"")
     } else {
+        if t_future {
+            outputArray.insert(maoriStartArray[WordTense.future.hashValue], at: 0)
+        } else if t_past {
+            outputArray.insert(maoriStartArray[WordTense.past.hashValue], at: 0)
+        } else {
+            outputArray.insert(maoriStartArray[tense!.hashValue], at: 0)
+        }
         print(outputArray.joined(separator: " "))
     }
     
     numberIndex = 0
+    t_future = false
+    t_past = false
     inputArray.removeAll()
     outputArray.removeAll()
 
 }
-
-
-
-
