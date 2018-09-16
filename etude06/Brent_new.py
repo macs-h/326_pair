@@ -1,3 +1,14 @@
+#!/usr/bin/env python3.6
+
+# E6 - Loopy Numbers
+#
+# @author Max Huang
+# @author Sam Paterson
+# @since 10 September 2018
+# @version 1
+
+longestLoop = 0
+
 def cycle_brent ( f, x0 ):
      # Main phase of algorithm: finding a repetition x_i = x_2i.
     # The hare moves twice as quickly as the tortoise and
@@ -37,54 +48,30 @@ def cycle_brent ( f, x0 ):
         lam += 1
 
     return lam, mu
-#   power = 1
-#   lam = 1
-#   tortoise = x0
-#   hare = f ( x0 )
-
-#   while ( tortoise != hare ):
-#     if ( power == lam ):
-#       tortoise = hare
-#       power = power * 2
-#       lam = 0
-#     hare = f ( hare )
-#     lam = lam + 1
-
-#   mu = 0
-#   tortoise = x0
-#   hare = x0
-
-#   for i in range ( 0, lam ):
-#     hare = f ( hare )
-
-#   while ( tortoise != hare ):
-#     tortoise = f ( tortoise )
-#     hare = f ( hare )
-#     mu = mu + 1
-
-#   return lam, mu
 
 
 factor_table = []
 
 def cycle_brent_test01 ( starting_val ):
-  import platform
+    global longestLoop
 
-  print()
+    print()
 
-  # Starting value
-#   x0 = 1264460
-  x0 = starting_val
-  factor_table.append(x0)
-  print ( 'Starting argument X0 = %d' % ( x0 ) )
+    # Starting value
+    #   x0 = 1264460
+    x0 = starting_val
+    factor_table.append(x0)
+    print ( 'Starting argument X0 = %d' % ( x0 ) )
 
-  lam, mu = cycle_brent ( f1, x0 )
+    lam, mu = cycle_brent ( f1, x0 )
 
-  print("Cycle len:", lam)
-  print("Cycle starts with:", factor_table[mu])
-  print("Factor table:", factor_table)
+    print("Cycle len:", lam)
+    #   print("Cycle starts with:", factor_table[mu])
+    #   print("Factor table:", factor_table)
 
-  return
+    if lam > longestLoop:
+        longestLoop = lam
+    return
 
 
 def factors(n):
@@ -96,11 +83,13 @@ def factors(n):
             ([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0),
             []
         ))
-    print("removing {} from {}".format(n, setOfFactors))
+    # print("removing {} from {}".format(n, setOfFactors))
     if len(setOfFactors) > 0:
         setOfFactors.remove(n)
     else:
         setOfFactors = set([1])
+    # if setOfFactors == {1}:
+    #     return 0
     return setOfFactors
 
 
@@ -108,19 +97,24 @@ def f1 ( i ) :
     global factor_table
 
     tmp = sum(factors(i))
-    print("sum result: {}".format(tmp))
+    # print("sum result: {}".format(tmp))
     factor_table.append(tmp)
+    if tmp > 9000000:
+        return 9000000
     return tmp
     # return value
 
 
 if ( __name__ == '__main__' ):
-    # for i in range (6,10):
-        # cycle_brent_test01 (i)
-    # cycle_brent_test01(6)
+    # for i in range (1264450,1264461):
+    for i in range(2, 10):
+        cycle_brent_test01 (i)
+
+
+    print("---\nLongest loop:", longestLoop)
 
     # num = 1264460
-    num = 7
-    print(factors(num))
-    print(f1(num))
-    print(cycle_brent(f1, num))
+    # num = 276
+    # print(factors(num))
+    # print(f1(num))
+    # print(cycle_brent(f1, num))
