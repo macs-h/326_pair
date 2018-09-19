@@ -80,11 +80,11 @@ func alternate5(array: [Character]) -> (array: [Character], moves: Int){
 //}
 
 
-func firstMovesarray(array: [Character], move: Int) -> (array: [Character], moves: Int){
+func firstMovesarray(array: [Character], move: Int, nCoins: Int) -> (array: [Character], moves: Int){
     
     var moves = move
     var coins = array
-    let n = array.count
+    let n = nCoins
     print("n= \(n)")
     coins = swapPair(from: 0, to: n, coins)
     moves += 1
@@ -103,19 +103,24 @@ func firstMovesarray(array: [Character], move: Int) -> (array: [Character], move
 
 
 
-func flipLoop(array: [Character], m: Int) -> (array: [Character], moves: Int){
+func flipLoop(array: [Character], m: Int, nCoins: Int) -> (array: [Character], moves: Int){
     var moves = m
     var coins = array
-    let n = array.count
+    let n = nCoins
     print("n= \(n)")
-    var p = n - 5//(n/2)
+    var p = coins.count-3//n - (n/2)+1
     var s = 0
     print("pre loop coins \(coins)")
     while(!evaluateCoins(array: coins)){
         coins = swapPair(from: s, to: p-1, coins)
         moves += 1
-        p = p-2
         print("move \(moves) resulted in \(coins)")
+        if(evaluateCoins(array: coins)){
+            print("complete")
+            break
+        }
+        p = p-2
+        
         coins = swapPair(from: p-1, to: s, coins)
         moves += 1
         s = s+1
@@ -130,7 +135,7 @@ func flipLoop(array: [Character], m: Int) -> (array: [Character], moves: Int){
 }
 
 
-func endFlips(array: [Character], m: Int) -> (array: [Character], moves: Int){
+func endFlips(array: [Character], m: Int, nCoins: Int) -> (array: [Character], moves: Int){
     var moves = m
     var coins = array
     if(coins[0] != coins[1]){
@@ -144,16 +149,16 @@ func endFlips(array: [Character], m: Int) -> (array: [Character], moves: Int){
     return(coins, moves)
 }
 
-func alternateCoins(fullCoins: inout [Character], low:Int, high:Int){
+func alternateCoins(fullCoins: inout [Character], low:Int, high:Int, nCoins:Int){
     var coins = Array(fullCoins[low...high])
     print("coins \(coins)")
     var moves = 0
     if(coins.count == 5){
         (coins, moves) = alternate5(array: coins)
     }else{
-        (coins, moves) = firstMovesarray(array: coins, move: 0)
-        (coins, moves) = flipLoop(array: coins, m: moves)
-        (coins, moves) = endFlips(array: coins, m: moves)
+        (coins, moves) = firstMovesarray(array: coins, move: 0, nCoins: nCoins)
+        (coins, moves) = flipLoop(array: coins, m: moves, nCoins: nCoins)
+        //(coins, moves) = endFlips(array: coins, m: moves)
     }
     fullCoins[low...high] = ArraySlice(coins)
     //print("after first \(moves) coins is \(coins)")
@@ -167,9 +172,9 @@ func breakUpCoins(mCoins: [Character], n:Int) -> [Character]{
     //coins = breakUpCoins(mCoins: coins, n: n/2)
     coins = swapPair(from: 0, to: coins.count, coins)
     print("after end swap \(coins)")
-    alternateCoins(fullCoins: &coins, low: n+3, high: coins.count-1)
+    alternateCoins(fullCoins: &coins, low: n+3, high: coins.count-1, nCoins: ((coins.count-1)-(n+3))-1)//-1 becuase n is 1 too big
     print("after first alternate swap \(coins)")
-    alternateCoins(fullCoins: &coins, low: 2, high: n+2)
+    alternateCoins(fullCoins: &coins, low: 2, high: n+4, nCoins: ((n+4)-2)-1) //-1 becuase n is 1 too big
     return coins
 }
 
@@ -188,7 +193,8 @@ for i in 0..<(n*2){
 //print(coins[n...n*2-1])
 //if( n >= 5 ){
 //    n = n/2
-breakUpCoins(mCoins: coins, n: n)
+var finalCoins = breakUpCoins(mCoins: coins, n: n)
+print("final coins \(finalCoins)")
 //print("coins after alternate\(coins)")
 //
 //}
