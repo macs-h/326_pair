@@ -16,6 +16,7 @@ func swapPair(from:Int, to:Int, _ ar: [Character])-> [Character]{
     print("from: \(from) to: \(to)")
     var array = ar
     if to >= array.count{
+        print("appened blanks")
         array.append(" ")
         array.append(" ")
         
@@ -170,7 +171,11 @@ func breakUpCoins(mCoins: [Character], n:Int) -> [Character]{
     }
     var coins = mCoins
     //coins = breakUpCoins(mCoins: coins, n: n/2)
-    coins = swapPair(from: 0, to: coins.count, coins)
+    var coinsMoved = 0
+    while(n-coinsMoved >= 5){
+        coins = swapPair(from: coinsMoved, to: coins.count, coins)
+        coinsMoved+=2
+    }
     print("after end swap \(coins)")
     alternateCoins(fullCoins: &coins, low: n+3, high: coins.count-1, nCoins: ((coins.count-1)-(n+3))-1)//-1 becuase n is 1 too big
     print("after first alternate swap \(coins)")
