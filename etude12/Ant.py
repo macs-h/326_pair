@@ -43,7 +43,7 @@ class Ant:
             y = currentPos[1]
             self.lastPos = 3
         else:
-            print("Direction not valid")
+            print("Direction '{}' not valid".format(dir))
 
         return (x, y)
 
