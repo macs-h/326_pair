@@ -21,19 +21,20 @@ def cycle_floyd ( f, x0, upperLimit):
         if noLoop or hare > 9000000:
             return 0,0
 
-    mu = 0
-    tortoise = x0
 
-    while ( tortoise != hare ):
-        tortoise = f ( tortoise )
-        hare = f ( hare )
-        mu = mu + 1
+    mu = 0
+    # tortoise = x0
+
+    # while ( tortoise != hare ):
+    #     tortoise = f ( tortoise )
+        # hare = f ( hare )
+        # mu = mu + 1
 
     lam = 1
     hare = f ( tortoise )
     while ( tortoise != hare ):
         hare = f ( hare )
-        lam = lam + 1
+        lam += 1
 
     return lam, mu
 
@@ -69,9 +70,9 @@ def factors(n):
 
 #*****************************************************************************80
 
-def resetBools ():
-    global  noLoop
-    noLoop = False
+# def resetBools ():
+#     global  noLoop
+#     noLoop = False
 
 def getTime(time_elapsed):
     hours, rem = divmod(time_elapsed, 3600)
@@ -91,7 +92,7 @@ if ( __name__ == '__main__' ):
     #&----------------------------------------------------------------------------80
     # previousLoopNums = {1}
     currentLoopNums = {}
-    noLoopNums = {}
+    noLoopNums = {1}
 
     longestCycle = 0
     numCycles = 0
