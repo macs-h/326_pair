@@ -53,12 +53,15 @@ func rotateUp(array: [[Int]]) -> [[Int]]{
 func FoundUniqueCube(cubeLet: [[Int]], uniqueCombinations: [[[Int]]: Int])-> Bool{
     var cube = cubeLet
     for _ in 0..<4{
-        cube = rotateUp(array: cube)
+        cube = rotateRight(array: cube)
         for _ in 0..<4{
-            cube = rotateRight(array: cube)
-            if uniqueCombinations[cube] != nil{
-                //found it in the dict so has already been counted
-                return false
+            cube = rotateUp(array: cube)
+            for _ in 0..<4{
+                cube = rotateRight(array: cube)
+                if uniqueCombinations[cube] != nil{
+                    //found it in the dict so has already been counted
+                    return false
+                }
             }
         }
     }
@@ -81,6 +84,7 @@ var cube = [[Int](repeating: 0, count: 4), [Int](repeating: 0, count: 4)]
 
 var listOfCubes = [[[Int]]: [[Int]]]()
 
+//the problem ----- missing the [0,0,0,0] [1,0,0,0] ones etc
 
 for i in 0..<4{
     print("> i: \(i)\tpt1 move")
