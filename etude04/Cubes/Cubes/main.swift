@@ -88,17 +88,21 @@ var listOfCubes = [[[Int]]: [[Int]]]()
 
 for i in 0..<4{
     print("> i: \(i)\tpt1 move")
-    for j in i..<4{
+    for j in i..<5{
         print(">> j: \(j)\tpt1 change index")
         var tempCube = cube
-        tempCube[0][j] = 1
+        if j>0{
+            tempCube[0][j-1] = 1
+        }
         for k in 0..<4{
             print(">>> k: \(k)\tpt2 move")
-            for n in k..<4{
+            for n in k..<5{
                 print(">>>> n: \(n)\tpt2 change index")
 //                var temp1Cube = cube
                 var temp1Cube = tempCube
-                temp1Cube[1][n] = 1
+                if n>0{
+                    temp1Cube[1][n-1] = 1
+                }
 //                if FoundUniqueCube(cubeLet: temp1Cube, uniqueCombinations: uniqueCombinations){
 //                    //Uninque combination so add to dic
 ////                    print("------ unique cube---")
@@ -112,12 +116,16 @@ for i in 0..<4{
                 print()
             }
 //            cube[1][k] = 1
+            
             tempCube[1][k] = 1
+            
             print("====\n")
         }
         cube[1] = [Int](repeating: 0, count: 4)
     }
+    
     cube[0][i] = 1
+    
 }
 print("cubes \(listOfCubes.count)")
 
