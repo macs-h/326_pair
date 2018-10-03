@@ -82,7 +82,7 @@ var cube = [[Int](repeating: 0, count: 4), [Int](repeating: 0, count: 4)]
 //    cube[0][i] = 1
 //}
 
-var listOfCubes = [[[Int]]: [[Int]]]()
+var listOfCubes = [[[Int]]: Int]()
 
 //the problem ----- missing the [0,0,0,0] [1,0,0,0] ones etc
 
@@ -110,7 +110,7 @@ for i in 0..<4{
 //                }
                 print("cube: \(temp1Cube)")
                 if listOfCubes[temp1Cube] == nil{
-                    listOfCubes[temp1Cube] = temp1Cube
+                    listOfCubes[temp1Cube] = listOfCubes.count
                     print("---- found cube \(temp1Cube)")
                 }
                 print()
@@ -129,12 +129,15 @@ for i in 0..<4{
 }
 print("cubes \(listOfCubes.count)")
 
-for (cu, _) in listOfCubes{
+for (cu, pos) in listOfCubes{
     if FoundUniqueCube(cubeLet: cu, uniqueCombinations: uniqueCombinations){
         //Uninque combination so add to dic
 //                    print("------ unique cube---")
-        uniqueCombinations[cu] = 1
+        uniqueCombinations[cu] = pos
     }
 }
 
+for d in uniqueCombinations{
+    print("dict: \(d)")
+}
 print("cube dict \(uniqueCombinations.count)")

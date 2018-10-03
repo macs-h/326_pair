@@ -11,6 +11,7 @@ class Ant:
     def __init__(self, dna, defaultSym):
         self.dna = dna
         self.defaultSym = defaultSym
+        self.plane = {}
 
 
 
@@ -63,3 +64,4 @@ class Ant:
             self.plane[currentPos] = dnaResult[1][self.lastPos] # changes plane state accordingly
 
         return self.getNewPos(nextpos, currentPos)
+
