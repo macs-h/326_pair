@@ -205,4 +205,10 @@ print("final coins \(finalCoins)")
 //}
 
 
+/*
+ if p is empty and there are two coins at p-3 and p-2 then moves those over 2
+ if not move p and p+1 to p-2 and p-1. then move p-3 and p-2 to where p and p+1 was
+ */
+
+
 
