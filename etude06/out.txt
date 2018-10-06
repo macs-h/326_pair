@@ -1,6 +1,30 @@
+
 -----
 Range:	2 to 30
-Time:	00:00:00.03
+Time:	00:00:00.00
 Cycles:	2
 Max:	1
 -----
+         214 function calls in 0.000 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        3    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:997(_handle_fromlist)
+        1    0.000    0.000    0.000    0.000 NewLoopy.py:10(<module>)
+        1    0.000    0.000    0.000    0.000 NewLoopy.py:115(getTime)
+       29    0.000    0.000    0.000    0.000 NewLoopy.py:123(sumPrimeFactors)
+       29    0.000    0.000    0.000    0.000 NewLoopy.py:146(sumFactorsOf)
+       28    0.000    0.000    0.000    0.000 NewLoopy.py:15(cycle_floyd)
+       43    0.000    0.000    0.000    0.000 NewLoopy.py:155(<lambda>)
+       61    0.000    0.000    0.000    0.000 NewLoopy.py:51(f1)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.divmod}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.exec}
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.print}
+        2    0.000    0.000    0.000    0.000 {built-in method time.time}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        4    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+
+
