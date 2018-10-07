@@ -66,49 +66,49 @@ def f1 ( i ) :
 
 #*****************************************************************************80
 
-def factors(n):
-    if n%2==0:
-        setOfFactors = set(
-        reduce(
-            list.__add__,
-            ([i, n//i] for i in range(2, int(n**0.5) + 1) if n % i == 0),
-            []
-        ))
-    else:
+# def factors(n):
+#     if n%2==0:
+#         setOfFactors = set(
+#         reduce(
+#             list.__add__,
+#             ([i, n//i] for i in range(2, int(n**0.5) + 1) if n % i == 0),
+#             []
+#         ))
+#     else:
 
-        setOfFactors = set(
-            reduce(
-            list.__add__,
-            ([i, n//i] for i in range(3, int(n**0.5) + 1, 2) if n % i == 0),
-            []
-        ))
-    if len(setOfFactors) == 0:
-        setOfFactors = set([0])
-    return setOfFactors
+#         setOfFactors = set(
+#             reduce(
+#             list.__add__,
+#             ([i, n//i] for i in range(3, int(n**0.5) + 1, 2) if n % i == 0),
+#             []
+#         ))
+#     if len(setOfFactors) == 0:
+#         setOfFactors = set([0])
+#     return setOfFactors
 
 
-def factors_new(n):
-    #   factors = set()
-    #   for x in range(1, int(n**0.5) + 1):
-    #     if n % x == 0:
-    #       factors.add(x)
-    #       factors.add(n//x)
-    #   return (factors)
-    def prime_powers(n):
-        # c goes through 2, 3, 5, then the infinite (6n+1, 6n+5) series
-        for c in accumulate(chain([2, 1, 2], cycle([2,4]))):
-            if c*c > n: break
-            if n%c: continue
-            d,p = (), c
-            while not n%c:
-                n,p,d = n//c, p*c, d + (p,)
-            yield(d)
-        if n > 1: yield((n,))
+# def factors_new(n):
+#     #   factors = set()
+#     #   for x in range(1, int(n**0.5) + 1):
+#     #     if n % x == 0:
+#     #       factors.add(x)
+#     #       factors.add(n//x)
+#     #   return (factors)
+#     def prime_powers(n):
+#         # c goes through 2, 3, 5, then the infinite (6n+1, 6n+5) series
+#         for c in accumulate(chain([2, 1, 2], cycle([2,4]))):
+#             if c*c > n: break
+#             if n%c: continue
+#             d,p = (), c
+#             while not n%c:
+#                 n,p,d = n//c, p*c, d + (p,)
+#             yield(d)
+#         if n > 1: yield((n,))
 
-    r = [1]
-    for e in prime_powers(n):
-        r += [a*b for a in r for b in e]
-    return r
+#     r = [1]
+#     for e in prime_powers(n):
+#         r += [a*b for a in r for b in e]
+#     return r
 
 #*****************************************************************************80
 
@@ -121,6 +121,7 @@ def getTime(time_elapsed):
 
 #!----------------------------------------------------------------------------80
 def sumPrimeFactors(primeFactorDict, initialVal):
+    s_time = time.time()
     returnVal = 1
     # Sum up the prime factors - mimics result of sum of natural factors
     for key in primeFactorDict:
@@ -139,12 +140,15 @@ def sumPrimeFactors(primeFactorDict, initialVal):
     # if returnVal == 1:
     #     seenPrimes[initialVal] = returnVal
 
+    print("sumPrimeFactors:\t{}".format(time.time() - s_time))
+
     return int(returnVal)
 
 
 
 def sumFactorsOf(n):
     global seenPrimes
+    s_time = time.time()
 
     #?-----------------------
     #? If ever n == 1, factorisation is finished.
@@ -168,21 +172,24 @@ def sumFactorsOf(n):
     #& If can't factorise by the time the prime reaches sqrt(n), then n
     #& is a prime.
     lastKey = 3
-    # limit = int(initialVal / 2)
+    limit = int(initialVal / 2) + 1
     # print("-- limit for {} is {}".format(initialVal, limit))
     # print("n:",n)
+    st_time = time.time()
     for key in seenPrimes:
         # print("--> seenPrimes:", key)
 
-        #& If the key is larger than sqrt of initial n, then break
-        # if key > limit:
-        #     break
-
-        while n != 1 and n % key == 0:
+        while n % key == 0:
             pf[key] += 1
             n /= key
         # print("key:",key)
         # lastKey = key
+
+        #& If the key is larger than half initial n, then break
+        if key > limit:
+            break
+
+    print("for loop:\t\t{}".format(time.time() - st_time))
 
     if n == 1:
         # print("\t- 2 -")
@@ -208,6 +215,7 @@ def sumFactorsOf(n):
     # primeFactorDict = dict(pf)
     # print("---- end ----")
     # print("fullArray[{}] = {}\n".format(initialVal, dict(pf)))
+    print("sumFactorsOf:\t{}".format(time.time() - s_time))
     return sumPrimeFactors(dict(pf), initialVal)
 
 
@@ -245,7 +253,9 @@ if ( __name__ == '__main__' ):
 
         # fullArray[i] = sum(factors(i))+1
         # fullArray[i] = sum(factors_new(i)) - i
+        print("Val:", i)
         fullArray[i] = sumFactorsOf(i)
+        print("------------------------------")
 
         # print(factors_new(i))
         # print("fullArray[{}] = {}".format(i, fullArray[i]))
