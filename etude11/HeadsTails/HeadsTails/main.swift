@@ -13,10 +13,8 @@ import Foundation
  - Returns:    resulting array
  */
 func swapPair(from:Int, to:Int, _ ar: [Character])-> [Character]{
-    print("from: \(from) to: \(to)")
     var array = ar
     if to >= array.count{
-        print("appened blanks")
         array.append(" ")
         array.append(" ")
         
@@ -32,12 +30,11 @@ func swapPair(from:Int, to:Int, _ ar: [Character])-> [Character]{
     if(array[from] != " " && array[from+1] != " "){
         array.swapAt(from, to)
         array.swapAt(from+1, to+1)
-    }else{
-        print("error moving empty space \(from)\n\n")
     }
     return array
 }
 
+//evaluates if the coins are alternating or not yet
 func evaluateCoins(array: [Character])-> Bool{
     var lastCoin: Character = " "
     for coin in array{
@@ -50,166 +47,116 @@ func evaluateCoins(array: [Character])-> Bool{
     
 }
 
-func alternate5(array: [Character]) -> (array: [Character], moves: Int){
-    var moves = 0
-    var coins = array
-    print("pre coins \(coins)")
-    coins = Tools.swapPair(from: 1, to: 5, coins)
-    moves+=1
-    coins = Tools.swapPair(from: 4, to: 1, coins)
-    moves+=1
-    coins = Tools.swapPair(from: 0, to: 4, coins)
-    moves+=1
-    print("post coins \(coins)")
-
-    return(coins, moves)
-}
-
-//func alternate6(array: [Character]) -> (array: [Character], moves: Int){
-//    var moves = 0
-//    var coins = array
-//    print("pre coins \(coins)")
-//    coins = Tools.swapPair(from: 1, to: 5, coins)
-//    moves+=1
-//    coins = Tools.swapPair(from: 4, to: 1, coins)
-//    moves+=1
-//    coins = Tools.swapPair(from: 0, to: 4, coins)
-//    moves+=1
-//    print("post coins \(coins)")
-//
-//    return(coins, moves)
-//}
-
-
-func firstMovesarray(array: [Character], move: Int, nCoins: Int) -> (array: [Character], moves: Int){
-    print("first moves start")
+//Set up that needs to be done at the start for iterative to work
+func firstMovesarray(array: [Character], move: Int, nCoins: Int, even: Int) -> (array: [Character], moves: Int){
+    
     var moves = move
     var coins = array
     let n = nCoins
-    print("n= \(n)")
     coins = swapPair(from: 0, to: n, coins)
     moves += 1
     print("move \(moves) resulted in \(coins)")
-    coins = swapPair(from: n-1, to: 0, coins)
+    coins = swapPair(from: n-1, to: n+2, coins)
     moves += 1
     print("move \(moves) resulted in \(coins)")
-    coins = swapPair(from: n - Int((n+2) / 2), to: n-1, coins)
-    moves += 1
-    print("move \(moves) resulted in \(coins)")
-    coins = swapPair(from: n - (n/2)+1, to:  n - Int((n+2) / 2), coins)
+    coins = swapPair(from: (n/2)-even, to: n-1, coins)
     moves += 1
     print("move \(moves) resulted in \(coins)")
     return(coins, moves)
 }
 
 
-
-func flipLoop(array: [Character], m: Int, nCoins: Int) -> (array: [Character], moves: Int){
-    print("\nflip loop start")
+//Interative part in the middle
+func flipLoop(array: [Character], m: Int, nCoins: Int, even: Int) -> (array: [Character], moves: Int){
     var moves = m
     var coins = array
     let n = nCoins
-    print("n= \(n)")
-    var p = coins.count-3//n - (n/2)+1
-    var s = 0
-    //print("pre loop coins \(coins)")
+    var p = n-3
+    var s = (n/2)-even
     while(!evaluateCoins(array: coins)){
-        coins = swapPair(from: s, to: p-1, coins)
+        coins = swapPair(from: p, to: s, coins)
         moves += 1
         print("move \(moves) resulted in \(coins)")
         if(evaluateCoins(array: coins)){
-            print("complete")
             break
         }
+        s = s-1
+        coins = swapPair(from: s, to: p, coins)
+        moves += 1
+        print("move \(moves) resulted in \(coins)")
         p = p-2
         
-        coins = swapPair(from: p-1, to: s, coins)
-        moves += 1
-        s = s+1
-        print("move \(moves) resulted in \(coins)")
         if(s >= p){
-            print("pointers collided at \(s)")
             break
         }
     }
-    print("after loop coins \(coins)")
     return(coins, moves)
 }
 
 
-func endFlips(array: [Character], m: Int, nCoins: Int) -> (array: [Character], moves: Int){
-    var moves = m
-    var coins = array
-    if(coins[0] != coins[1]){
-        //alternate
-        if(coins[1] != coins[4]){
-            coins = swapPair(from: 0, to: 2, coins)
-            moves+=1
+
+while true{
+    print("How many heads?")
+    var inpArray: Array<Substring> = []
+    while true{
+        let inp = readLine()
+        if inp == ""{
+            exit(1)
         }
+        inpArray = inp!.split(separator: " ")
+        if Int(inpArray[0]) != nil{
+            break
+        }
+        print("Enter a valid number of heads")
     }
-    
-    return(coins, moves)
-}
-
-func alternateCoins(fullCoins: inout [Character], low:Int, high:Int, nCoins:Int){
-    var coins = Array(fullCoins[low...high])
-    print("coins \(coins)")
+    var coins: [Character] = []
+    var n = 0
     var moves = 0
-    if(coins.count == 5){
-        (coins, moves) = alternate5(array: coins)
+    if inpArray.count == 1{
+        //equal number of heads and tails
+        n = Int(inpArray[0])!
+        for i in 0..<(n*2){
+            if(i < n){
+                coins.append("H")
+            }else{
+                coins.append("T")
+            }
+        }
+        
+        (coins,moves) = firstMovesarray(array: coins, move: moves, nCoins: n*2, even: 1)
+        (coins, moves) = flipLoop(array: coins, m: moves, nCoins: n*2, even: 1)
+        coins.removeSubrange(0..<4)
+        
+        
     }else{
-        (coins, moves) = firstMovesarray(array: coins, move: 0, nCoins: nCoins)
-        (coins, moves) = flipLoop(array: coins, m: moves, nCoins: nCoins)
-        //(coins, moves) = endFlips(array: coins, m: moves)
+        //n heads and n-1 tails
+        n = Int(inpArray[0])!
+        for i in 0..<(n*2)-1{
+            if(i < n){
+                coins.append("H")
+            }else{
+                coins.append("T")
+            }
+        }
+        n *= 2
+        n -= 1
+        print(coins)
+        
+        (coins,moves) = firstMovesarray(array: coins, move: moves, nCoins: n, even: 0)
+        (coins, moves) = flipLoop(array: coins, m: moves, nCoins: n, even: 0)
+        if n > 5 {
+            coins = swapPair(from: coins.count-2, to: 3, coins)
+            coins.removeSubrange((coins.count-2)...)
+        }else{
+            coins.removeSubrange(0..<2)
+        }
+        coins.removeSubrange(0..<2)
+        
     }
-    fullCoins[low...high] = ArraySlice(coins)
-    //print("after first \(moves) coins is \(coins)")
+    print("\nFinal coins \(coins)")
+    print("Total moves = \(moves)\n")
+  
 }
-
-func breakUpCoins(mCoins: [Character], n:Int) -> [Character]{
-    if(n<5){
-        return mCoins
-    }
-    var coins = mCoins
-    //coins = breakUpCoins(mCoins: coins, n: n/2)
-    var coinsMoved = 0
-    while(n-coinsMoved >= 5){
-        coins = swapPair(from: coinsMoved, to: coins.count, coins)
-        coinsMoved+=2
-    }
-    print("after end swap \(coins)")
-    alternateCoins(fullCoins: &coins, low: n+3, high: coins.count-1, nCoins: ((coins.count-1)-(n+3))-1)//-1 becuase n is 1 too big
-    print("after first alternate swap \(coins)")
-    alternateCoins(fullCoins: &coins, low: 2, high: n+4, nCoins: ((n+4)-2)-1) //-1 becuase n is 1 too big
-    return coins
-}
-
-print("How many heads?")
-let inp = readLine()
-var n = Int(inp!)!
-var coins: [Character] = []
-for i in 0..<(n*2){
-    if(i < n){
-        coins.append("H")
-    }else{
-        coins.append("T")
-    }
-    
-}
-//print(coins[n...n*2-1])
-//if( n >= 5 ){
-//    n = n/2
-var finalCoins = breakUpCoins(mCoins: coins, n: n)
-print("final coins \(finalCoins)")
-//print("coins after alternate\(coins)")
-//
-//}
-
-
-/*
- if p is empty and there are two coins at p-3 and p-2 then moves those over 2
- if not move p and p+1 to p-2 and p-1. then move p-3 and p-2 to where p and p+1 was
- */
 
 
 
