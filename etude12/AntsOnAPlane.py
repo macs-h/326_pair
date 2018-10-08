@@ -13,6 +13,8 @@ while True:
         try:
             inp = input()
             if inp == "":
+                continue
+            if inp.lower() == "exit":
                 exit()
             parsedIn = inp.split(' ')
             if(len(parsedIn) == 1):
@@ -36,6 +38,7 @@ while True:
         except EOFError:
             exit()
     ant = Ant(dnaDict, defaultSym)
+    #print(ant.plane)
     currentStep = 0
     currentPos = (0,0)
     while currentStep < maxSteps:
@@ -44,10 +47,7 @@ while True:
     for inp in totalInput:
         print(inp)
     print("# {0} {1}\n".format(currentPos[0], currentPos[1]))
-    try:
-        input()
-    except EOFError:
-        exit()
+
 
 
 

@@ -82,7 +82,7 @@ func alternate5(array: [Character]) -> (array: [Character], moves: Int){
 
 
 func firstMovesarray(array: [Character], move: Int, nCoins: Int) -> (array: [Character], moves: Int){
-    
+    print("first moves start")
     var moves = move
     var coins = array
     let n = nCoins
@@ -105,13 +105,14 @@ func firstMovesarray(array: [Character], move: Int, nCoins: Int) -> (array: [Cha
 
 
 func flipLoop(array: [Character], m: Int, nCoins: Int) -> (array: [Character], moves: Int){
+    print("\nflip loop start")
     var moves = m
     var coins = array
     let n = nCoins
     print("n= \(n)")
     var p = coins.count-3//n - (n/2)+1
     var s = 0
-    print("pre loop coins \(coins)")
+    //print("pre loop coins \(coins)")
     while(!evaluateCoins(array: coins)){
         coins = swapPair(from: s, to: p-1, coins)
         moves += 1
