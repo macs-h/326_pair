@@ -101,7 +101,7 @@ while true{
     while true{
         let inp = readLine()
         if inp == ""{
-            exit(1)
+            exit(0)
         }
         inpArray = inp!.split(separator: " ")
         if Int(inpArray[0]) != nil{
