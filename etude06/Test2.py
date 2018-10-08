@@ -14,40 +14,46 @@ from collections import defaultdict
 
 def cycle_floyd ( f, x0, upperLimit):
     global noLoop
+    global loopStart
+    global seenValues
 
     tortoise = f ( x0 )
     hare = f ( tortoise )
-
-    if noLoop:
-        return 0,0
 
     while ( tortoise != hare ):
         tortoise = f ( tortoise )
         hare = f ( f ( hare ) )
 
-        if noLoop or hare > upperLimit:
+        if tortoise in seenValues or hare > upperLimit:
             return 0,0
+        seenValues[tortoise] = tortoise
+
+        # if noLoop or tortoise > upperLimit:
+        #     return 0,0
+        # if tortoise < x0:
+        #     return 0,0
 
     mu = 0
 
+
     lam = 1
     hare = f ( tortoise )
-
-    if tortoise == 0 or hare == 0:
-        return 0,0
     while ( tortoise != hare ):
         hare = f ( hare )
         lam += 1
+        seenValues[hare] = hare
     # print("\n\tTOR: {}  HAR: {}".format(tortoise, hare))
     # print("\tfound loop of size {}\n".format(lam))
+
+    # loopStart[x0] = lam
     return lam, mu
 
 #*****************************************************************************80
 
 def f1 ( i ) :
-
-    global fullArray, noLoop, endNum
+    global fullArray, noLoop, endNum, currentNumber
     global seenValues
+    global currentValues
 
     if i > endNum:
         noLoop = True
@@ -55,8 +61,13 @@ def f1 ( i ) :
     else:
         value = fullArray[i]
 
-    if value in seenValues or value <= 1:
-        noLoop = True
+    # # if value in seenValues or value <= 1:
+    # #     noLoop = True
+
+    # if value in seenValues:# or value < i:
+    #     noLoop = True
+    #     value = 0
+
 
     return value
 
@@ -71,6 +82,8 @@ def getTime(time_elapsed):
 
 #!----------------------------------------------------------------------------80
 def sumPrimeFactors(primeFactorDict, initialVal):
+    global seenFactors
+
     returnVal = 1
     # Sum up the prime factors - mimics result of sum of natural factors
     for key in primeFactorDict:
@@ -91,74 +104,75 @@ def sumPrimeFactors(primeFactorDict, initialVal):
 
     return int(returnVal)
 
-
+#*****************************************************************************80
 
 def sumFactorsOf(n):
-    global seenPrimes
+    global primes
+    global seenFactors
 
-    #?-----------------------
-    #? If ever n == 1, factorisation is finished.
-    #? If returnVal == initialVal, the number is a prime so memoise it
-    #?-----------------------
 
     initialVal = n
     pf = defaultdict(lambda: 0)
 
+    # print("\n\n--- init val: {} ---".format(initialVal))
+
     while n % 2 == 0:
         pf[2] += 1
         n /= 2
+        # if n in seenFactors and 2 in seenFactors[n]:
+        #     pf[2] += seenFactors[n][2]
+        #     break
 
     if n == 1:
-        # print("- 1 -")
-        # print("fullArray[{}] = {}\n".format(initialVal, dict(pf)))
+        # seenFactors[initialVal].update(dict(pf))
         return sumPrimeFactors(dict(pf), initialVal)
 
+    # limit = int(initialVal / 2) + 1
+    limit = int(initialVal ** 0.5)
 
-    #& Go through list of primes trying to factorise `n`.
-    #& If can't factorise by the time the prime reaches sqrt(n), then n
-    #& is a prime.
-    lastKey = 3
-    limit = int(initialVal / 2) + 1
-    # print("-- limit for {} is {}".format(initialVal, limit))
-    # print("n:",n)
-    for key in seenPrimes:
-        # print("--> seenPrimes:", key)
-
+    for key in primes:
         while n % key == 0:
             pf[key] += 1
             n /= key
-        # print("key:",key)
-        # lastKey = key
+            # if n in seenFactors and key in seenFactors[n]:
+            #     pf[key] += seenFactors[n][key]
+            #     break
 
         #& If the key is larger than half initial n, then break
         if key > limit:
+            # print("-- break key:", key)
             break
 
     if n == 1:
-        # print("\t- 2 -")
-        # print("fullArray[{}] = {}\n".format(initialVal, dict(pf)))
+        # seenFactors[initialVal].update(dict(pf))
         return sumPrimeFactors(dict(pf), initialVal)
-
-
-    # print("lastKey: {}".format(lastKey))
-    # for i in range(3,int(n**0.5)+1,2):
-    # for i in range (lastKey, int(initialVal**0.5)+1,2):
-    #     # & Check dictionary of primes and if a prime, break out here.
-    #     # print(n, i)
-    #     print(i)
-    #     while n % i == 0:
-    #         pf[i] += 1
-    #         n /= i
 
     #& If n is still larger than 2, n is a prime.
     if n > 2:
         pf[n] += 1
-        seenPrimes[n] = n  #& n is prime so add to list of seen primes.
+
 
     # primeFactorDict = dict(pf)
     # print("---- end ----")
     # print("fullArray[{}] = {}\n".format(initialVal, dict(pf)))
+    
+    # seenFactors[initialVal].update(dict(pf))
     return sumPrimeFactors(dict(pf), initialVal)
+
+
+
+def sieve_of_eratosthenes(max_integer):
+    sieve = [True for _ in range(max_integer + 1)]
+    sieve[0:1] = [False, False]
+    for start in range(2, max_integer + 1):
+        if sieve[start]:
+            for i in range(2 * start, max_integer + 1, start):
+                sieve[i] = False
+    primes = []
+    for i in range(2, max_integer + 1):
+        if sieve[i]:
+            primes.append(i)
+    return primes
 
 
 #!----------------------------------------------------------------------------80
@@ -172,8 +186,8 @@ if ( __name__ == '__main__' ):
     start_time = time.time()
 
     startNum = 2
-    endNum = 100000
-
+    endNum = 9000000
+    currentNumber = 0
 
     #!---
     fullArray = [0] * (endNum+1) # endNum
@@ -182,13 +196,21 @@ if ( __name__ == '__main__' ):
     perfectNumberCount = 0
     loopCount = 0
     seenValues = {0:0, 1:1}
+    seenFactors = defaultdict(lambda: {})
 
+    # loops = []
+    loops = {}
+    currentValues = {}
+    # cLens = []
+    loopStart = {}
     #!---
 
     #!--------------------------------------------------------------------------
+    primes = sieve_of_eratosthenes(endNum)
+
     # Set up the array containing the sums.
     for i in range(startNum, endNum+1):
-        if i % 10000 == 0:
+        if i % 100000 == 0:
             print("--- {}\t calc: {} ---".format(getTime(time.time() - start_time), i))
 
         fullArray[i] = sumFactorsOf(i)
@@ -206,21 +228,30 @@ if ( __name__ == '__main__' ):
         noLoop = False
         current = {}
 
-
+        currentNumber = i
         cycleLen, tmp = cycle_floyd(f1, i, endNum)
         seenValues[i] = i
 
-        if cycleLen != 0:
+        if cycleLen > 1:
             loopCount += 1
+            # cLens.append(cycleLen)
+            # loops.append(i)
+            loops[i] = cycleLen
 
             if cycleLen > longestCycle:
                 longestCycle = cycleLen
 
-    # print(seenPrimes)
+    # print(primes)
     print("-----\nRange:\t{} to {}".format(startNum, endNum))
     print("Time:\t{}".format(getTime(time.time() - start_time)))
     print("Cycles:\t{}\nMax:\t{}\n-----".format(loopCount, longestCycle))
-
+    print()
+    print(loops)
+    print()
+    print(loopStart)
+    print()
+    print(len(loopStart))
+    # print(cLens)
     #!--------------------------------------------------------------------------
 
 
