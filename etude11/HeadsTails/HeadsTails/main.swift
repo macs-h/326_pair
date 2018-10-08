@@ -144,12 +144,16 @@ while true{
         
         (coins,moves) = firstMovesarray(array: coins, move: moves, nCoins: n, even: 0)
         (coins, moves) = flipLoop(array: coins, m: moves, nCoins: n, even: 0)
-        coins = swapPair(from: coins.count-2, to: 3, coins)
-        coins.removeSubrange((coins.count-2)...)
+        if n > 5 {
+            coins = swapPair(from: coins.count-2, to: 3, coins)
+            coins.removeSubrange((coins.count-2)...)
+        }else{
+            coins.removeSubrange(0..<2)
+        }
         coins.removeSubrange(0..<2)
         
     }
-    print("Final coins \(coins)")
+    print("\nFinal coins \(coins)")
     print("Total moves = \(moves)\n")
   
 }
