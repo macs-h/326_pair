@@ -23,6 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E12A3847216D62AD00D26386 /* Test2.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = Test2.py; path = ../../Test2.py; sourceTree = "<group>"; };
 		E1CB5F9C216C9C3900B4C4DB /* LoopyNumbers */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LoopyNumbers; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1CB5F9F216C9C3900B4C4DB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,6 +58,7 @@
 		E1CB5F9E216C9C3900B4C4DB /* LoopyNumbers */ = {
 			isa = PBXGroup;
 			children = (
+				E12A3847216D62AD00D26386 /* Test2.py */,
 				E1CB5F9F216C9C3900B4C4DB /* main.swift */,
 			);
 			path = LoopyNumbers;

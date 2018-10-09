@@ -57,6 +57,7 @@ var seenFactors: [Int:Int] = [:]
 print("primes started")
 var primes = sieve_of_eratosthenes(n: endNum)
 print("primes done")
+print(primes)
 func sumPrimeFactors(primeFactorDic: [Int:Int], initalValue: Int)-> Int{
     var returnVal = 1
     
@@ -114,16 +115,16 @@ func sumFactorsOf(num: Int) -> Int{
     
     return sumPrimeFactors(primeFactorDic: primeFactDic, initalValue: initalVal)
 }
-
-var startTime = NSDate()
-
-
-for i in startNum..<endNum{
-    if i % 100000 == 0{
-        print("---\(i)")
-    }
-    fullArray[i] = sumFactorsOf(num: i)
-}
-var endTime = NSDate()
-print(endTime.timeIntervalSince(startTime as Date))
-
+//
+//var startTime = NSDate()
+//
+//
+//for i in startNum..<endNum{
+//    if i % 100000 == 0{
+//        print("---\(i)")
+//    }
+//    fullArray[i] = sumFactorsOf(num: i)
+//}
+//var endTime = NSDate()
+//print(endTime.timeIntervalSince(startTime as Date))
+//
