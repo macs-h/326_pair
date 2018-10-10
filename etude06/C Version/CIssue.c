@@ -30,11 +30,12 @@ void sieve(int n, int *primes)
 //int sumPrimeFactors(size_t limit, int primeFactDic[limit][2],int initalVal){
 int sumPrimeFactors(int **primeFactDic, size_t limit, int initalVal){
     int returnVal = 1;
-    int i;
-    int power;
+    int i = 0;
+    int power = 0;
     int tempVal = 0;
-    int amount;
+    int amount = 0;
     printf("size of dic %d\n", limit);
+
     for (i = 0;i<limit;i++){
         amount = primeFactDic[i][1];
         printf("amount= %d \n", amount);
@@ -43,8 +44,7 @@ int sumPrimeFactors(int **primeFactDic, size_t limit, int initalVal){
         }
 
         printf("after \n");
-
-        /*--this for loop breaks the program with seg fault---*/
+        printf("amount: %d\n", amount);
         for(power = 0; power <= amount; power++){
             printf("power \n");
         }
@@ -64,22 +64,33 @@ int main(){
     int *fullArray;
     int i;
 
+    printf("starting\n");
+
     primesArray = malloc(MAX_LENGTH * sizeof primesArray[0]);
-    primeFactDic = malloc(primeFactLength* sizeof primesArray[0]);
+    primeFactDic = malloc(primeFactLength * sizeof(primeFactDic[0]));
     fullArray = malloc(MAX_LENGTH * sizeof fullArray[0]);
+
+    printf("after allocs\n");
+
     if (NULL == primesArray || NULL == primeFactDic || NULL == fullArray) {
         fprintf(stderr, "memory allocation failed!\n");
         return EXIT_FAILURE;
     }
     for(i = 0; i<primeFactLength;i++){
-        primeFactDic[i] = malloc(2* sizeof primesArray[0]);
+        printf("allocing 2nd dim\n");
+        primeFactDic[i] = malloc(2 * sizeof(primeFactDic[0][0]));
         if (NULL == primeFactDic[i]) {
             fprintf(stderr, "memory allocation failed!\n");
             return EXIT_FAILURE;
         }
     }
+
+    printf("sieve\n");
     sieve(endVal, primesArray);
+    printf("after sieve primefactlength: %d\n",primeFactLength);
+
     for (i=0; i<primeFactLength; i++){
+        printf("setting memory: %d\n", i);
         memset(primeFactDic[i], 0, 2*sizeof(int));
     }
     
