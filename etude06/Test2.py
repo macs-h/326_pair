@@ -1,4 +1,4 @@
-#! /usr/bin/env python3.6
+#! /usr/bin/env python3
 #
 # E6 - Loopy Numbers
 #
@@ -210,11 +210,11 @@ if ( __name__ == '__main__' ):
 
     # Set up the array containing the sums.
     for i in range(startNum, endNum+1):
-        if i % 100000 == 0:
-            print("--- {}\t calc: {} ---".format(getTime(time.time() - start_time), i))
+        # if i % 100000 == 0:
+        #     print("--- {}\t calc: {} ---".format(getTime(time.time() - start_time), i))
 
         fullArray[i] = sumFactorsOf(i)
-
+        print(fullArray[i])
         # print(factors_new(i))
         # print("fullArray[{}] = {}".format(i, fullArray[i]))
 
@@ -222,8 +222,8 @@ if ( __name__ == '__main__' ):
 
     # MAIN PROGRAM
     for i in range (startNum, endNum):
-        if i % 100000 == 0:
-            print("--- {}\t at: {} ---".format(getTime(time.time() - start_time), i))
+        # if i % 100000 == 0:
+        #     print("--- {}\t at: {} ---".format(getTime(time.time() - start_time), i))
 
         noLoop = False
         current = {}
