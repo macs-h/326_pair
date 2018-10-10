@@ -106,58 +106,66 @@ def sumPrimeFactors(primeFactorDict, initialVal):
 
 #*****************************************************************************80
 
-def sumFactorsOf(n):
+def sumFactorsOf():
     global primes
     global seenFactors
 
+    for i in range(startNum, endNum + 1):
+        if i % 100000 == 0:
+            print("--- {}\t calc: {} ---".format(getTime(time.time() - start_time), i))
 
-    initialVal = n
-    pf = defaultdict(lambda: 0)
+        n=i
 
-    # print("\n\n--- init val: {} ---".format(initialVal))
 
-    while n % 2 == 0:
-        pf[2] += 1
-        n /= 2
-        # if n in seenFactors and 2 in seenFactors[n]:
-        #     pf[2] += seenFactors[n][2]
-        #     break
 
-    if n == 1:
-        # seenFactors[initialVal].update(dict(pf))
-        return sumPrimeFactors(dict(pf), initialVal)
+        initialVal = n
+        pf = defaultdict(lambda: 0)
 
-    # limit = int(initialVal / 2) + 1
-    limit = int(initialVal ** 0.5)
+        # print("\n\n--- init val: {} ---".format(initialVal))
 
-    for key in primes:
-        while n % key == 0:
-            pf[key] += 1
-            n /= key
-            # if n in seenFactors and key in seenFactors[n]:
-            #     pf[key] += seenFactors[n][key]
+        while n % 2 == 0:
+            pf[2] += 1
+            n /= 2
+            # if n in seenFactors and 2 in seenFactors[n]:
+            #     pf[2] += seenFactors[n][2]
             #     break
 
-        #& If the key is larger than half initial n, then break
-        if key > limit:
-            # print("-- break key:", key)
-            break
+        if n == 1:
+            # seenFactors[initialVal].update(dict(pf))
+            fullArray[i]= sumPrimeFactors(dict(pf), initialVal)
 
-    if n == 1:
+        # limit = int(initialVal / 2) + 1
+        limit = int(initialVal ** 0.5)
+
+        for key in primes:
+            while n % key == 0:
+                pf[key] += 1
+                n /= key
+                # if n in seenFactors and key in seenFactors[n]:
+                #     pf[key] += seenFactors[n][key]
+                #     break
+
+            #& If the key is larger than half initial n, then break
+            # if key > limit:
+            #     # print("-- break key:", key)
+            #     break
+
+        if n == 1:
+            # seenFactors[initialVal].update(dict(pf))
+            fullArray[i]= sumPrimeFactors(dict(pf), initialVal)
+
+        #& If n is still larger than 2, n is a prime.
+        if n > 2:
+            pf[n] += 1
+
+
+        # primeFactorDict = dict(pf)
+        # print("---- end ----")
+        # print("fullArray[{}] = {}\n".format(initialVal, dict(pf)))
+
         # seenFactors[initialVal].update(dict(pf))
-        return sumPrimeFactors(dict(pf), initialVal)
-
-    #& If n is still larger than 2, n is a prime.
-    if n > 2:
-        pf[n] += 1
-
-
-    # primeFactorDict = dict(pf)
-    # print("---- end ----")
-    # print("fullArray[{}] = {}\n".format(initialVal, dict(pf)))
-    
-    # seenFactors[initialVal].update(dict(pf))
-    return sumPrimeFactors(dict(pf), initialVal)
+        # return sumPrimeFactors(dict(pf), initialVal)
+        fullArray[i] = sumPrimeFactors(dict(pf), initialVal)
 
 
 
@@ -209,12 +217,13 @@ if ( __name__ == '__main__' ):
     primes = sieve_of_eratosthenes(endNum)
 
     # Set up the array containing the sums.
-    for i in range(startNum, endNum+1):
-        # if i % 100000 == 0:
-        #     print("--- {}\t calc: {} ---".format(getTime(time.time() - start_time), i))
-
-        fullArray[i] = sumFactorsOf(i)
-        print(fullArray[i])
+    # for i in range(startNum, endNum+1):
+    #     if i % 100000 == 0:
+    #         print("--- {}\t calc: {} ---".format(getTime(time.time() - start_time), i))
+    #
+    #     fullArray[i] = sumFactorsOf(i)
+    sumFactorsOf()
+        # print(fullArray[i])
         # print(factors_new(i))
         # print("fullArray[{}] = {}".format(i, fullArray[i]))
 
@@ -222,8 +231,8 @@ if ( __name__ == '__main__' ):
 
     # MAIN PROGRAM
     for i in range (startNum, endNum):
-        # if i % 100000 == 0:
-        #     print("--- {}\t at: {} ---".format(getTime(time.time() - start_time), i))
+        if i % 100000 == 0:
+            print("--- {}\t at: {} ---".format(getTime(time.time() - start_time), i))
 
         noLoop = False
         current = {}
