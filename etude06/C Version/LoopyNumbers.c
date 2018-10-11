@@ -74,10 +74,10 @@ int sumFactorsof(int n, int **primeFactDic, size_t primesFactLength,int *primesA
     int limit = pow(initalVal, 0.5);
     int i, key;
    
-    // if(primesArray[n] != 0){
-    //     /*is a prime stop*/
-    //     return 1;
-    // }
+    if(primesArray[n] != 0){
+        /*is a prime stop*/
+        return 1;
+    }
 
     while (n%2 == 0){
         primeFactDic[2][1] = primeFactDic[2][1]+1; /*-----When its even you want to increase 2???*/
@@ -162,7 +162,7 @@ int main(){
     int primeFactLength = endVal;
     int *fullArray;
     int *seenValues;
-    int i, cycleLen, loopCount, longestCycle;
+    int i, cycleLen = 0, loopCount = 0, longestCycle = 0;
     clock_t startTime = clock();
 
 
@@ -200,14 +200,19 @@ int main(){
         // printf("%d\n",fullArray[i]);
         clearPrimeFactDic(primeFactDic, i+1);
     }
+
     /*check cycles*/
     for(i =startVal; i< endVal; i++){
         if(i %10000 == 0){
             printf("cycle--- %d\n", i);
         }
+        if(seenValues[i] == 1){
+            continue;
+        }
         cycleLen = cycle(i, fullArray, seenValues, endVal);
         // printf("%d\n", cycleLen);
-        if (cycleLen > 1){
+        if (cycleLen > 0){
+            // printf("is loop of len %d", cycleLen);
             loopCount+=1;
 
             if(cycleLen > longestCycle){
@@ -229,44 +234,101 @@ int main(){
     return EXIT_SUCCESS;
 }
 
+
+
 int cycle(int n, int *fullArray, int *seenValues,int endNum){
-    int tort, hare, length = 0;
-    tort = getNextValue(n, fullArray, endNum);
-    hare = getNextValue(tort, fullArray, endNum);
-    if(hare == 0){ /*Covers tort too because if tort == 0 hare ==0*/
-        //return 0??????
-    }
+    int length = 1, nextValue, loopStart;
+    
+    int *loopSeen;
+    loopSeen = malloc(endNum* sizeof(loopSeen[0]));
+    memset(loopSeen, 0, endNum*sizeof(int));
 
-    while(tort != hare){
-        tort = getNextValue(tort, fullArray, endNum);
-        hare = getNextValue(hare, fullArray, endNum);
-        hare = getNextValue(hare, fullArray, endNum); /*hare jumps twice*/
 
-        if(hare > endNum){
+    nextValue = getNextValue(n ,fullArray, endNum);
+    while(1){
+        if(nextValue > endNum || nextValue == 1 || nextValue == 0){
             return 0;
         }
 
-        // if(hare == 0 || hare == 1 || tort == 0 || tort == 1){ /*Covers tort too because if tort == 0 hare ==0*/
-        //     return 0;
-        // }
+        
 
-        // if(seenValues[tort] == 1 || hare > endNum){ /*1 means has been seen*/
-        //     return 0;
-        // }
-        //seenValues[tort] = 1;
+        if(loopSeen[nextValue] == 1){
+            /*found loop*/
+            loopStart = nextValue;
+            break;
+        }
+
+        if(seenValues[nextValue] == 1){ /*value has been seen before*/
+            return 0;
+        }
+        
+        seenValues[nextValue] = 1; /*Means its been seen before*/
+        loopSeen[nextValue] = 1;
+        nextValue = getNextValue(nextValue ,fullArray, endNum);
+        // printf("next val - %d\n", nextValue);
     }
 
+    printf("loop found at %d for %d\n", loopStart,n);
     /*there is a loop if it got to here*/
     
-    hare = getNextValue(tort, fullArray, endNum);
-    while(tort != hare){
-        hare = getNextValue(hare, fullArray, endNum);
-        length +=1;
-        seenValues[hare] = 1;
+    nextValue = getNextValue(loopStart ,fullArray, endNum);
+    while(nextValue != loopStart){
+        length++;
+        nextValue = getNextValue(nextValue ,fullArray, endNum);
     }
-
+    // hare = getNextValue(tort, fullArray, endNum);
+    // while(tort != hare){
+    //     hare = getNextValue(hare, fullArray, endNum);
+    //     length +=1;
+    //     seenValues[hare] = 1;
+    // }
+    printf("length= %d\n",length);
+    free(loopSeen);
     return length;
 }
+
+
+
+// int cycle(int n, int *fullArray, int *seenValues,int endNum){
+//     int tort, hare, length = 0;
+//     tort = getNextValue(n, fullArray, endNum);
+//     hare = getNextValue(tort, fullArray, endNum);
+//     if(hare == 0){ /*Covers tort too because if tort == 0 hare ==0*/
+//         //return 0??????
+//     }
+//     printf("just before while for num %d\n", n);
+
+//     while(tort != hare){
+//         tort = getNextValue(tort, fullArray, endNum);
+//         hare = getNextValue(hare, fullArray, endNum);
+//         hare = getNextValue(hare, fullArray, endNum); /*hare jumps twice*/
+
+//         // if(hare > endNum){
+//         //     return 0;
+//         // }
+
+//         if(hare == 0 || hare == 1 || tort == 0 || tort == 1){ /*Covers tort too because if tort == 0 hare ==0*/
+//             return 0;
+//         }
+//         printf("tort = %d hare = %d\n", tort, hare);
+
+//         if(hare > endNum || seenValues[tort] == 1){ /*1 means has been seen*/
+//             return 0;
+//         }
+//         seenValues[tort] = 1;
+//     }
+
+//     /*there is a loop if it got to here*/
+//     printf("is loop at %d\n", n);
+//     hare = getNextValue(tort, fullArray, endNum);
+//     while(tort != hare){
+//         hare = getNextValue(hare, fullArray, endNum);
+//         length +=1;
+//         seenValues[hare] = 1;
+//     }
+
+//     return length;
+// }
 
 int getNextValue(int n, int *fullArray,int endNum){
     if(n > endNum || n == 0){
@@ -279,4 +341,9 @@ int getNextValue(int n, int *fullArray,int endNum){
 
 /*
 18 loops under 100000,
-max 5*/
+max 5
+---------
+9000000
+106 loops
+28 max
+*/
