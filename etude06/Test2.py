@@ -111,10 +111,11 @@ def sumFactorsOf():
     global seenFactors
 
     for i in range(startNum, endNum + 1):
-        if i % 100000 == 0:
-            print("--- {}\t calc: {} ---".format(getTime(time.time() - start_time), i))
+#        if i % 100000 == 0:
+#            print("--- {}\t calc: {} ---".format(getTime(time.time() - start_time), i))
 
         n=i
+        
 
 
 
@@ -133,6 +134,7 @@ def sumFactorsOf():
         if n == 1:
             # seenFactors[initialVal].update(dict(pf))
             fullArray[i]= sumPrimeFactors(dict(pf), initialVal)
+            continue
 
         # limit = int(initialVal / 2) + 1
         limit = int(initialVal ** 0.5)
@@ -146,14 +148,14 @@ def sumFactorsOf():
                 #     break
 
             #& If the key is larger than half initial n, then break
-            # if key > limit:
-            #     # print("-- break key:", key)
-            #     break
+            if key > limit:
+                 # print("-- break key:", key)
+                 break
 
         if n == 1:
             # seenFactors[initialVal].update(dict(pf))
             fullArray[i]= sumPrimeFactors(dict(pf), initialVal)
-
+            continue
         #& If n is still larger than 2, n is a prime.
         if n > 2:
             pf[n] += 1
@@ -166,6 +168,7 @@ def sumFactorsOf():
         # seenFactors[initialVal].update(dict(pf))
         # return sumPrimeFactors(dict(pf), initialVal)
         fullArray[i] = sumPrimeFactors(dict(pf), initialVal)
+
 
 
 
@@ -194,7 +197,7 @@ if ( __name__ == '__main__' ):
     start_time = time.time()
 
     startNum = 2
-    endNum = 9000000
+    endNum = 100000
     currentNumber = 0
 
     #!---
@@ -223,6 +226,7 @@ if ( __name__ == '__main__' ):
     #
     #     fullArray[i] = sumFactorsOf(i)
     sumFactorsOf()
+    
         # print(fullArray[i])
         # print(factors_new(i))
         # print("fullArray[{}] = {}".format(i, fullArray[i]))
@@ -231,8 +235,8 @@ if ( __name__ == '__main__' ):
 
     # MAIN PROGRAM
     for i in range (startNum, endNum):
-        if i % 100000 == 0:
-            print("--- {}\t at: {} ---".format(getTime(time.time() - start_time), i))
+#        if i % 100000 == 0:
+#            print("--- {}\t at: {} ---".format(getTime(time.time() - start_time), i))
 
         noLoop = False
         current = {}
@@ -240,7 +244,7 @@ if ( __name__ == '__main__' ):
         currentNumber = i
         cycleLen, tmp = cycle_floyd(f1, i, endNum)
         seenValues[i] = i
-
+        print(cycleLen)
         if cycleLen > 1:
             loopCount += 1
             # cLens.append(cycleLen)
@@ -254,12 +258,12 @@ if ( __name__ == '__main__' ):
     print("-----\nRange:\t{} to {}".format(startNum, endNum))
     print("Time:\t{}".format(getTime(time.time() - start_time)))
     print("Cycles:\t{}\nMax:\t{}\n-----".format(loopCount, longestCycle))
-    print()
-    print(loops)
-    print()
-    print(loopStart)
-    print()
-    print(len(loopStart))
+#    print()
+#    print(loops)
+#    print()
+#    print(loopStart)
+#    print()
+#    print(len(loopStart))
     # print(cLens)
     #!--------------------------------------------------------------------------
 

@@ -69,15 +69,15 @@ int sumPrimeFactors(int **primeFactDic, size_t primeFactLength, int initalVal){
 }
 
 
-int sumFactorsof(int n, int **primeFactDic, size_t primesFactLength,int *primesArray, size_t primesLength){
+int sumFactorsof(int n, int **primeFactDic, size_t primesFactLength,int *primesArray, int *primesLength){
     int initalVal = n;
     int limit = pow(initalVal, 0.5);
     int i, key;
    
-    if(primesArray[n] != 0){
-        /*is a prime stop*/
-        return 1;
-    }
+    // if(primesArray[n] != 0){
+    //     /*is a prime stop*/
+    //     return 1;
+    // }
 
     while (n%2 == 0){
         primeFactDic[2][1] = primeFactDic[2][1]+1; /*-----When its even you want to increase 2???*/
@@ -90,10 +90,10 @@ int sumFactorsof(int n, int **primeFactDic, size_t primesFactLength,int *primesA
     }
 
 
-    for(i= 0; i<primesLength; i++){
+    for(i= 0; i<*primesLength; i++){
         key = primesArray[i];
 
-        if(key == 0){continue;} /*value not a prime*/
+        //if(key == 0){continue;} /*value not a prime*/
 
         while(n % key == 0){
             primeFactDic[key][1] = primeFactDic[key][1]+1;
@@ -110,30 +110,63 @@ int sumFactorsof(int n, int **primeFactDic, size_t primesFactLength,int *primesA
 
     
 
-    // if(n > 2){
-    //     primeFactDic[n][1] = primeFactDic[n][1]+1;
-    // }
+    if(n > 2){
+        primeFactDic[n][1] = primeFactDic[n][1]+1;
+        // printf("added prime %d\n", n);
+        primesArray[*primesLength] = n;
+        *primesLength+=1;
+    }
 
-    printf("---- %d is a prime! ----\n", initalVal);
+    // printf("---- %d is a prime! ----\n", initalVal);
     return sumPrimeFactors(primeFactDic, primesFactLength, initalVal);
     
 }
 
 
+// // Function to calculate sum of all  
+// //divisors of a given number 
+// int divSum(int n) 
+// { 
+//     // Sum of divisors 
+//     int result = 0; 
+   
+//     // find all divisors which divides 'num' 
+//     for (int i = 2; i <= sqrt(n); i++) 
+//     { 
+//         // if 'i' is divisor of 'n' 
+//         if (n % i == 0) 
+//         { 
+//             // if both divisors are same 
+//             // then add it once else add 
+//             // both 
+//             if (i == (n / i)) 
+//                 result += i; 
+//             else
+//                 result += (i + n/i); 
+//         } 
+//     } 
+   
+//     // Add 1 and n to result as above loop 
+//     // considers proper divisors greater  
+//     // than 1. 
+//     return (result + n + 1); 
+// } 
+
+
 int main(){
     int startVal = 2;
-    int endVal = 100000;
+    int endVal = 200000;
     int *primesArray;
-    int primesLength = endVal;
+    int *primesLength = malloc(1* sizeof(int));
     int **primeFactDic;
     int primeFactLength = endVal;
     int *fullArray;
     int *seenValues;
     int i, cycleLen, loopCount, longestCycle;
-    int startTime = clock();
+    clock_t startTime = clock();
 
 
-    primesArray = malloc(primesLength * sizeof primesArray[0]);
+    primesArray = malloc(MAX_LENGTH * sizeof primesArray[0]);
     primeFactDic = malloc(primeFactLength* sizeof primeFactDic[0]);
     fullArray = malloc(endVal * sizeof fullArray[0]);
     seenValues = malloc(endVal * sizeof seenValues[0]);
@@ -148,26 +181,32 @@ int main(){
             return EXIT_FAILURE;
         }
     }
-    sieve(endVal, primesArray);
+    //sieve(endVal, primesArray);
     for (i=0; i<primeFactLength; i++){
         memset(primeFactDic[i], 0, 2*sizeof(int));
     }
-    printf("-------start--------\n");
+
+    primesArray[0] = 2;
+    *primesLength =1;
+
+
+
+    // printf("-------start--------\n");
     for (i=startVal; i<endVal; i++){
         if(i% 10000 == 0){
             printf("--- %d\n", i);
         }
-        fullArray[i] = sumFactorsof(i, primeFactDic, i+1, primesArray, i+1);
-        // printf("full array %d\n",i);
+        fullArray[i] =  sumFactorsof(i, primeFactDic, i+1, primesArray, primesLength);
+        // printf("%d\n",fullArray[i]);
         clearPrimeFactDic(primeFactDic, i+1);
     }
-    printf("starting cycle\n");
     /*check cycles*/
     for(i =startVal; i< endVal; i++){
         if(i %10000 == 0){
             printf("cycle--- %d\n", i);
         }
         cycleLen = cycle(i, fullArray, seenValues, endVal);
+        printf("%d\n", cycleLen);
         if (cycleLen > 1){
             loopCount+=1;
 
@@ -178,9 +217,10 @@ int main(){
 
     }
     printf("-----\nRange:\t%d to %d\n",startVal, endVal);
-    printf("Time:\t%d\n",clock() - startTime);
+    printf("Time:\t%f\n",(clock() - startTime)/ (double)CLOCKS_PER_SEC);
     printf("Cycles:\t%d\nMax:\t%d\n-----\n",loopCount, longestCycle);
     printf("\n");
+    printf("prime length = %d\n", *primesLength);
 
     free(primesArray);
     free(primeFactDic);
@@ -190,35 +230,33 @@ int main(){
 }
 
 int cycle(int n, int *fullArray, int *seenValues,int endNum){
-    printf("\n\ncycle %d start\n", n);
     int tort, hare, length = 0;
     tort = getNextValue(n, fullArray, endNum);
     hare = getNextValue(tort, fullArray, endNum);
-    printf("after hare and tort first run\n");
     if(hare == 0){ /*Covers tort too because if tort == 0 hare ==0*/
         //return 0??????
     }
 
     while(tort != hare){
-        printf("while %d", n);
         tort = getNextValue(tort, fullArray, endNum);
         hare = getNextValue(hare, fullArray, endNum);
         hare = getNextValue(hare, fullArray, endNum); /*hare jumps twice*/
 
-        if(hare == 0 || hare == 1 || tort == 0 || tort == 1){ /*Covers tort too because if tort == 0 hare ==0*/
-            return 0;
-        }
+        // if(hare == 0 || hare == 1 || tort == 0 || tort == 1){ /*Covers tort too because if tort == 0 hare ==0*/
+        //     return 0;
+        // }
 
-        if(seenValues[tort] == 1 || hare > endNum){ /*1 means has been seen*/
-            return 0;
-        }
-        seenValues[tort] = 1;
+        // if(seenValues[tort] == 1 || hare > endNum){ /*1 means has been seen*/
+        //     return 0;
+        // }
+        //seenValues[tort] = 1;
     }
 
     /*there is a loop if it got to here*/
+    
     hare = getNextValue(tort, fullArray, endNum);
     while(tort != hare){
-        hare = getNextValue(tort, fullArray, endNum);
+        hare = getNextValue(hare, fullArray, endNum);
         length +=1;
         seenValues[hare] = 1;
     }
