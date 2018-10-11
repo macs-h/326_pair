@@ -155,7 +155,7 @@ int sumFactorsof(int n, int **primeFactDic, size_t primesFactLength,int *primesA
 
 int main(){
     int startVal = 2;
-    int endVal = 200000;
+    int endVal = 100000;
     int *primesArray;
     int *primesLength = malloc(1* sizeof(int));
     int **primeFactDic;
@@ -206,7 +206,7 @@ int main(){
             printf("cycle--- %d\n", i);
         }
         cycleLen = cycle(i, fullArray, seenValues, endVal);
-        printf("%d\n", cycleLen);
+        // printf("%d\n", cycleLen);
         if (cycleLen > 1){
             loopCount+=1;
 
@@ -242,6 +242,10 @@ int cycle(int n, int *fullArray, int *seenValues,int endNum){
         hare = getNextValue(hare, fullArray, endNum);
         hare = getNextValue(hare, fullArray, endNum); /*hare jumps twice*/
 
+        if(hare > endNum){
+            return 0;
+        }
+
         // if(hare == 0 || hare == 1 || tort == 0 || tort == 1){ /*Covers tort too because if tort == 0 hare ==0*/
         //     return 0;
         // }
@@ -271,3 +275,8 @@ int getNextValue(int n, int *fullArray,int endNum){
         return fullArray[n];
     }
 }
+
+
+/*
+18 loops under 100000,
+max 5*/
